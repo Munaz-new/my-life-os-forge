@@ -1,24 +1,51 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
+import { LogoMark } from "@/components/lifeos/LogoMark";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: Splash,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Splash() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const t = setTimeout(() => navigate({ to: "/onboarding" }), 2800);
+    return () => clearTimeout(t);
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
+      <AmbientBackground />
+      <div className="flex flex-col items-center text-center">
+        <LogoMark size={128} />
+        <motion.h1
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="mt-10 text-5xl font-bold tracking-tight sm:text-6xl"
+        >
+          <span className="text-gradient">LifeOS</span>
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.8 }}
+          className="mt-4 max-w-sm text-sm text-muted-foreground sm:text-base"
+        >
+          Become who you're meant to become.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 0.6 }}
+          className="mt-12 flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-muted-foreground"
+        >
+          <span className="h-1 w-1 animate-pulse rounded-full bg-primary" />
+          Initializing system
+        </motion.div>
+      </div>
+    </main>
   );
 }
