@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
 import { GlassCard } from "@/components/lifeos/GlassCard";
@@ -69,6 +69,16 @@ function Home() {
           <p className="mt-2 text-sm text-muted-foreground">
             Your system is calibrated. Today's window of growth is open.
           </p>
+          <div className="mt-5">
+            <Link
+              to="/system"
+              className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-neon)] transition hover:brightness-110"
+              style={{ background: "var(--gradient-hero)" }}
+            >
+              ◎ Open System Window
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
         </motion.div>
 
         <div className="grid gap-5 lg:grid-cols-3">
