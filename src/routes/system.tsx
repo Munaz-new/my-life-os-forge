@@ -139,8 +139,8 @@ function SystemPage() {
         {/* 2. Core Attributes */}
         <Section title="Core Attributes" eyebrow="Operator Matrix" delay={0.15}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {attributes.map((a) => (
-              <AttributeCard key={a.key} {...a} />
+            {attributes.map(({ key, ...a }) => (
+              <AttributeCard key={key} {...a} />
             ))}
           </div>
         </Section>
@@ -178,8 +178,8 @@ function SystemPage() {
         {/* 8. Life Domains */}
         <Section title="Life Domains" eyebrow="Growth Vectors" delay={0.35}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {domains.map((d) => (
-              <LifeDomainCard key={d.key} {...d} />
+            {domains.map(({ key, ...d }) => (
+              <LifeDomainCard key={key} {...d} />
             ))}
           </div>
         </Section>
