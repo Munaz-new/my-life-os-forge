@@ -13,6 +13,7 @@ import { Route as SystemRouteImport } from './routes/system'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as HomeRouteImport } from './routes/home'
+import { Route as CoreRouteImport } from './routes/core'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
@@ -37,6 +38,11 @@ const HomeRoute = HomeRouteImport.update({
   path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoreRoute = CoreRouteImport.update({
+  id: '/core',
+  path: '/core',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -56,6 +62,7 @@ const AuthForgotRoute = AuthForgotRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/core': typeof CoreRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/core': typeof CoreRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/core': typeof CoreRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/core'
     | '/home'
     | '/onboarding'
     | '/setup'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/core'
     | '/home'
     | '/onboarding'
     | '/setup'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
+    | '/core'
     | '/home'
     | '/onboarding'
     | '/setup'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  CoreRoute: typeof CoreRoute
   HomeRoute: typeof HomeRoute
   OnboardingRoute: typeof OnboardingRoute
   SetupRoute: typeof SetupRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core': {
+      id: '/core'
+      path: '/core'
+      fullPath: '/core'
+      preLoaderRoute: typeof CoreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -187,6 +207,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  CoreRoute: CoreRoute,
   HomeRoute: HomeRoute,
   OnboardingRoute: OnboardingRoute,
   SetupRoute: SetupRoute,
@@ -195,13 +216,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -69,17 +69,25 @@ function Home() {
           <p className="mt-2 text-sm text-muted-foreground">
             Your system is calibrated. Today's window of growth is open.
           </p>
-          <div className="mt-5">
+          <div className="mt-5 flex flex-wrap gap-3">
             <Link
-              to="/system"
+              to="/core"
               className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-neon)] transition hover:brightness-110"
               style={{ background: "var(--gradient-hero)" }}
+            >
+              ◉ Open CORE
+              <span aria-hidden>→</span>
+            </Link>
+            <Link
+              to="/system"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-foreground/90 transition hover:bg-white/10"
             >
               ◎ Open System Window
               <span aria-hidden>→</span>
             </Link>
           </div>
         </motion.div>
+
 
         <div className="grid gap-5 lg:grid-cols-3">
           {/* Level + XP */}
