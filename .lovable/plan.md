@@ -1,63 +1,45 @@
-## Phase 2 — Core System Window
+# Phase 3 — CORE Intelligence Interface
 
-Add a new `/system` route as the heart of LifeOS. Reuse Phase 1's visual identity (glass cards, neon gradient, dark background, existing fonts) — no changes to existing pages, colors, or type. Only additions.
+Add a new `/core` route styled with the existing LifeOS glass + neon language (no changes to prior pages, tokens, or nav patterns). All data is mock; no backend, AI, or APIs.
 
-### Navigation entry
-- On `/home`, add a prominent "Open System" button (glowing, gradient) near the header or main quest area that links to `/system`.
-- Keep everything else on `/home` intact.
+## Route & entry point
+- New file: `src/routes/core.tsx` (title "CORE — LifeOS", meta description "Personal Intelligence Center").
+- Add a prominent "Open CORE" neon button in the `/home` dashboard header, next to the existing "Open System Window" button. Also add a small CORE link in the `/system` header for parity. No other layout changes.
 
-### New route
-- `src/routes/system.tsx` — the System page, mounts `<AmbientBackground />` for continuity, uses framer-motion for entrance/float animations.
+## Mock data
+- New file: `src/lib/core-mock.ts` exporting: `dailyBriefing`, `priorities` (3), `energyRings` (5 metrics), `opportunities`, `risks`, `momentum` (morning/afternoon/evening projected productivity points), `weeklyIntelligence`, `recommendations`, `quickActions`.
 
-### New reusable components (in `src/components/lifeos/system/`)
-- `OperatorCard.tsx` — avatar (initials placeholder in gradient circle), name, title, rank, level, total XP, member since, with animated `ProgressRing` wrapped around avatar.
-- `ProgressRing.tsx` — SVG circular progress with animated stroke-dashoffset + soft glow; configurable size, value, label.
-- `AttributeCard.tsx` — icon, name, level, `XPBar`, %, trend arrow (▲ ▼ –). Slight float animation on hover.
-- `XPBar.tsx` — reuse existing `src/components/lifeos/XPBar.tsx` (already built).
-- `StatusBadge.tsx` — glowing animated chip with pulse dot.
-- `BuffCard.tsx` — positive effect, icon, name, mock timer (e.g. `2d 14h left`), gradient border glow.
-- `DebuffCard.tsx` — same shape as buff but with subtle amber/red warning tone (using existing destructive/warning tokens; no new palette).
-- `MilestoneCard.tsx` — timeline entry with icon, type tag, title, timestamp, connector line.
-- `LifeDomainCard.tsx` — domain name, level, progress bar, tiny inline SVG sparkline (mock points).
-- `FloatingStatusPanel.tsx` — floating circular button (bottom-right) + slide-in side panel (framer-motion `AnimatePresence`), shows level, XP, today's focus, energy, mood, quick stats, recent achievement, system status.
+## New reusable components (`src/components/lifeos/core/`)
+- `CoreOrb.tsx` — layered radial-gradient orb (cyan→violet), slow breathing scale + opacity pulse via Framer Motion, soft outer glow rings, subtle rotating conic shimmer. Below: "CORE ONLINE" label, "All Systems Operational" status with animated pulse dot, mock sync timestamp.
+- `BriefingCard.tsx` — large glass card: greeting, "Yesterday Summary" bullet list with check/cross glyphs, "Today's Strategy" paragraph, productive-window row, and a `ProgressRing` (reuse existing) showing Focus Score with count-up.
+- `PriorityCard.tsx` — three-card grid (Deep Work / Health / Learning): duration, importance chip, energy requirement bar, expected impact.
+- `EnergyRing.tsx` — small animated SVG ring; used in an `AnalysisCard` grid for Energy / Focus / Recovery / Mental Load / Stress.
+- `AnalysisCard.tsx` — generic titled glass container used for Energy, Weekly Intelligence, Momentum sections.
+- `OpportunityCard.tsx` — icon, title, meta row (Potential Growth, Est. XP, Difficulty, Impact) with subtle hover lift.
+- `RiskCard.tsx` — soft amber/cyan warning styling (no red alarms), warning glyph, title, one-line detail, severity chip.
+- `MomentumChart.tsx` — horizontal SVG area/line chart across Morning → Afternoon → Evening with animated stroke draw (`pathLength`) and gradient fill; axis labels underneath.
+- `RecommendationCard.tsx` — title, reason, expected benefit, confidence % bar.
+- `CoreCommandButton.tsx` — floating bottom-right neon button; click expands a glass command palette (Framer Motion `AnimatePresence`) listing Quick Actions: Daily Briefing, Refresh Analysis, View Progress, Open System (links `/system`), Future AI Chat (disabled "Coming Soon" chip). Click-outside + Esc close.
 
-### System page section layout
-Sections stacked in a max-w-6xl container, each wrapped in `GlassCard` where appropriate:
+## Page composition (`/core`)
+Sections in order, each wrapped in the existing `Section` pattern (eyebrow + title, staggered fade-in):
+1. Hero — `AmbientBackground` + centered `CoreOrb` + status stack.
+2. Daily Briefing — `BriefingCard`.
+3. Today's Priorities — 3-column `PriorityCard` grid.
+4. Energy Analysis — `AnalysisCard` with 5 `EnergyRing`s.
+5. Opportunity Scanner — grid of `OpportunityCard`s.
+6. Risk Detection — grid of `RiskCard`s.
+7. Momentum Timeline — `AnalysisCard` wrapping `MomentumChart`.
+8. Weekly Intelligence — `AnalysisCard` with 6 stat tiles (reuse count-up hook).
+9. CORE Recommendations — grid of `RecommendationCard`s.
 
-```text
-┌─────────────────────────────────────────────┐
-│ 1. Operator Profile (avatar + XP ring)      │
-├──────────────────────────┬──────────────────┤
-│ 3. Overall Progress ring │ 4. Current Status│
-├──────────────────────────┴──────────────────┤
-│ 2. Core Attributes (grid of 8 AttributeCard)│
-├──────────────────────┬──────────────────────┤
-│ 5. Active Buffs      │ 6. Current Debuffs   │
-├──────────────────────┴──────────────────────┤
-│ 7. Personal Records (stat grid)             │
-├─────────────────────────────────────────────┤
-│ 8. Life Domains (grid of 7 LifeDomainCard)  │
-├─────────────────────────────────────────────┤
-│ 9. Recent Milestones (vertical timeline)    │
-└─────────────────────────────────────────────┘
-   + FloatingStatusPanel (fixed bottom-right)
-```
+Floating `CoreCommandButton` mounted at page root (bottom-right, offset from existing FloatingStatusPanel if `/core` reuses it — it does not; only System has that panel).
 
-Note: the existing `/home` FAB stays on `/home` only. The System page uses its own `FloatingStatusPanel` button so they don't collide.
+## Motion & polish
+- Reuse `useCountUp` for all numeric values (focus score, XP, confidence, energy metrics, weekly stats).
+- Add a lightweight ambient-particles layer (absolute-positioned motion divs with randomized slow drift) behind the hero orb only — no perf-heavy canvas.
+- Staggered section entrances via existing pattern already used in `/system`.
+- All colors, radii, glass utilities, gradients, and typography come from existing tokens in `src/styles.css` — no new palette.
 
-### Animations
-- Entry: staggered `fade-in` + slight y-translate per section via framer-motion.
-- XP bars & rings: animate width / stroke-dashoffset from 0 on mount.
-- Numbers: count-up hook (`useCountUp`) for level, XP totals, %.
-- Cards: soft float loop (`y: [0, -3, 0]` with long duration) on attribute/domain cards, subtle scale on hover.
-- Badges: pulse dot + gradient shimmer.
-- Side panel: slide-in-right with backdrop blur.
-
-### Mock data
-- Colocated in `src/lib/system-mock.ts` — attributes, buffs, debuffs, records, domains, milestones, operator profile.
-
-### Head metadata
-- `title: "System — LifeOS"`, description about the personal operating system view. No og:image change.
-
-### Out of scope (per user)
-No backend, no auth, no quest logic, no real data, no notifications, no color/typography changes.
+## Out of scope (explicit)
+No AI calls, no DB, no auth changes, no notifications, no edits to Phase 1/2 pages beyond adding the entry-point button(s).
