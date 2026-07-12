@@ -1,45 +1,50 @@
-# Phase 3 — CORE Intelligence Interface
+# Phase 4 — Adaptive Mission Engine
 
-Add a new `/core` route styled with the existing LifeOS glass + neon language (no changes to prior pages, tokens, or nav patterns). All data is mock; no backend, AI, or APIs.
+Add a new `/missions` route ("Mission Center — Today's Evolution Path") that reuses the existing LifeOS glass + neon language. No changes to Phase 1/2/3 pages beyond adding a single entry-point button. Mock data only.
 
-## Route & entry point
-- New file: `src/routes/core.tsx` (title "CORE — LifeOS", meta description "Personal Intelligence Center").
-- Add a prominent "Open CORE" neon button in the `/home` dashboard header, next to the existing "Open System Window" button. Also add a small CORE link in the `/system` header for parity. No other layout changes.
+## Route & entry points
+- New file: `src/routes/missions.tsx` — head title "Mission Center — LifeOS", meta description "Today's Evolution Path — CORE-designed daily missions".
+- Add a neon "◆ Mission Center" button in `/home` header (next to Open CORE / Open System).
+- Add matching header links in `/system` and `/core` headers for parity.
 
 ## Mock data
-- New file: `src/lib/core-mock.ts` exporting: `dailyBriefing`, `priorities` (3), `energyRings` (5 metrics), `opportunities`, `risks`, `momentum` (morning/afternoon/evening projected productivity points), `weeklyIntelligence`, `recommendations`, `quickActions`.
+- New file: `src/lib/missions-mock.ts` exporting:
+  - `missionStatus` (status, difficulty, ETA, expectedGrowth, confidence %, generatedAt).
+  - `categories` — 8 entries (Main, Side, Recovery, Learning, Fitness, Focus, Creative, Career), each with icon, tone (primary/cyan/violet), tagline, duration, difficulty, xp.
+  - `missionDetail` — name, objective, reason, duration, difficulty, growthAreas[], expectedOutcome, prepTips[].
+  - `growthProjection` — Programming +12, Focus +8, Discipline +5, Health +3, Learning +9.
+  - `timeline` — Preparation → Execution → Reflection → Completion (each with time + blurb + state).
+  - `coreExplanation` — calm intelligent paragraph.
+  - `reflectionPrompts` — 3 questions.
 
-## New reusable components (`src/components/lifeos/core/`)
-- `CoreOrb.tsx` — layered radial-gradient orb (cyan→violet), slow breathing scale + opacity pulse via Framer Motion, soft outer glow rings, subtle rotating conic shimmer. Below: "CORE ONLINE" label, "All Systems Operational" status with animated pulse dot, mock sync timestamp.
-- `BriefingCard.tsx` — large glass card: greeting, "Yesterday Summary" bullet list with check/cross glyphs, "Today's Strategy" paragraph, productive-window row, and a `ProgressRing` (reuse existing) showing Focus Score with count-up.
-- `PriorityCard.tsx` — three-card grid (Deep Work / Health / Learning): duration, importance chip, energy requirement bar, expected impact.
-- `EnergyRing.tsx` — small animated SVG ring; used in an `AnalysisCard` grid for Energy / Focus / Recovery / Mental Load / Stress.
-- `AnalysisCard.tsx` — generic titled glass container used for Energy, Weekly Intelligence, Momentum sections.
-- `OpportunityCard.tsx` — icon, title, meta row (Potential Growth, Est. XP, Difficulty, Impact) with subtle hover lift.
-- `RiskCard.tsx` — soft amber/cyan warning styling (no red alarms), warning glyph, title, one-line detail, severity chip.
-- `MomentumChart.tsx` — horizontal SVG area/line chart across Morning → Afternoon → Evening with animated stroke draw (`pathLength`) and gradient fill; axis labels underneath.
-- `RecommendationCard.tsx` — title, reason, expected benefit, confidence % bar.
-- `CoreCommandButton.tsx` — floating bottom-right neon button; click expands a glass command palette (Framer Motion `AnimatePresence`) listing Quick Actions: Daily Briefing, Refresh Analysis, View Progress, Open System (links `/system`), Future AI Chat (disabled "Coming Soon" chip). Click-outside + Esc close.
+## New components (`src/components/lifeos/missions/`)
+- `MissionHeroCard.tsx` — large glass card with animated status ring, difficulty chip, ETA, expected growth, confidence bar (uses `useCountUp`), generated timestamp, subtle scanning-line motion.
+- `MissionCard.tsx` — category tile with icon badge, tagline, duration/difficulty/xp meta, tone-based accent border + hover glow lift.
+- `MissionDetailCard.tsx` — structured layout: name, objective, "Why CORE selected this", meta grid (duration/difficulty), growth-area chips, expected outcome, preparation tips list with check glyphs.
+- `GrowthProjection.tsx` — vertical list of animated bars (Framer Motion width animation) with count-up percentages and tone colors.
+- `MissionTimeline.tsx` — 4-step animated vertical timeline (Preparation/Execution/Reflection/Completion) with connecting neon line drawn via `pathLength`, pulsing active node.
+- `MissionReason.tsx` — dedicated CORE explanation card, calm tone, orb glyph, quoted paragraph.
+- `MissionControls.tsx` — button row: Accept Mission (primary neon), Regenerate, Save For Later, Skip Today, Preview Tomorrow (disabled "Coming Soon" chip). Buttons are visual only.
+- `ReflectionCard.tsx` — placeholder card with three prompts and disabled glass textareas.
+- `AmbientParticles.tsx` — small reusable floating-particles layer (motion divs w/ randomized slow drift) for hero background. Kept lightweight.
 
-## Page composition (`/core`)
-Sections in order, each wrapped in the existing `Section` pattern (eyebrow + title, staggered fade-in):
-1. Hero — `AmbientBackground` + centered `CoreOrb` + status stack.
-2. Daily Briefing — `BriefingCard`.
-3. Today's Priorities — 3-column `PriorityCard` grid.
-4. Energy Analysis — `AnalysisCard` with 5 `EnergyRing`s.
-5. Opportunity Scanner — grid of `OpportunityCard`s.
-6. Risk Detection — grid of `RiskCard`s.
-7. Momentum Timeline — `AnalysisCard` wrapping `MomentumChart`.
-8. Weekly Intelligence — `AnalysisCard` with 6 stat tiles (reuse count-up hook).
-9. CORE Recommendations — grid of `RecommendationCard`s.
-
-Floating `CoreCommandButton` mounted at page root (bottom-right, offset from existing FloatingStatusPanel if `/core` reuses it — it does not; only System has that panel).
+## Page composition (`/missions`)
+Sections wrapped in the existing `Section` pattern (eyebrow + title, staggered fade-in):
+1. Header (LogoMark + links back to Home / CORE / System).
+2. Hero — `AmbientParticles` + `MissionHeroCard` with title "Mission Center" and subtitle "Today's Evolution Path".
+3. CORE Explanation — `MissionReason`.
+4. Mission Categories — responsive grid of 8 `MissionCard`s.
+5. Today's Mission Detail — `MissionDetailCard`.
+6. Growth Projection — `GrowthProjection` inside an `AnalysisCard` (reuse existing).
+7. Mission Timeline — `MissionTimeline` inside `AnalysisCard`.
+8. Mission Controls — `MissionControls`.
+9. Reflection — `ReflectionCard`.
 
 ## Motion & polish
-- Reuse `useCountUp` for all numeric values (focus score, XP, confidence, energy metrics, weekly stats).
-- Add a lightweight ambient-particles layer (absolute-positioned motion divs with randomized slow drift) behind the hero orb only — no perf-heavy canvas.
-- Staggered section entrances via existing pattern already used in `/system`.
-- All colors, radii, glass utilities, gradients, and typography come from existing tokens in `src/styles.css` — no new palette.
+- Reuse `useCountUp` for confidence %, XP, growth %s.
+- Staggered section entrances matching `/core` and `/system`.
+- Hover glow + subtle lift on category cards using existing tokens.
+- All colors, radii, glass utilities, gradients come from `src/styles.css` — no new tokens.
 
-## Out of scope (explicit)
-No AI calls, no DB, no auth changes, no notifications, no edits to Phase 1/2 pages beyond adding the entry-point button(s).
+## Out of scope
+No mission logic, no persistence, no AI, no backend, no notifications, no edits to prior pages beyond adding entry-point buttons.
