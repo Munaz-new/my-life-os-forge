@@ -88,6 +88,12 @@ function CorePage() {
         </Link>
         <div className="flex items-center gap-2">
           <Link
+            to="/missions"
+            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
+          >
+            ◆ Missions
+          </Link>
+          <Link
             to="/system"
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
           >
