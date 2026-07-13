@@ -72,7 +72,13 @@ function MissionsPage() {
             <p className="text-sm font-medium">Mission Center</p>
           </div>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/genome"
+            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
+          >
+            ❋ Genome
+          </Link>
           <Link
             to="/core"
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
