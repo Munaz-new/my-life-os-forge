@@ -35,6 +35,17 @@ export function GenomeConnection({
   const cy = my + ny * bend;
   const path = `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
 
+  // sample quadratic bezier for the traveling particle
+  const samples = 24;
+  const xs: number[] = [];
+  const ys: number[] = [];
+  for (let i = 0; i <= samples; i++) {
+    const t = i / samples;
+    const it = 1 - t;
+    xs.push(it * it * x1 + 2 * it * t * cx + t * t * x2);
+    ys.push(it * it * y1 + 2 * it * t * cy + t * t * y2);
+  }
+
   return (
     <g>
       <motion.path
@@ -56,11 +67,8 @@ export function GenomeConnection({
       <motion.circle
         r={2}
         fill={color}
-        style={{
-          offsetPath: `path('${path}')`,
-          filter: `drop-shadow(0 0 4px ${color})`,
-        } as React.CSSProperties}
-        animate={{ offsetDistance: ["0%", "100%"] }}
+        style={{ filter: `drop-shadow(0 0 4px ${color})` }}
+        animate={{ cx: xs, cy: ys }}
         transition={{
           duration: 4 + (delay % 2),
           repeat: Infinity,
