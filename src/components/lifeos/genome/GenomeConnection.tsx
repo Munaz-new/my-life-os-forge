@@ -60,7 +60,7 @@ export function GenomeConnection({
           offsetPath: `path('${path}')`,
           filter: `drop-shadow(0 0 4px ${color})`,
         } as React.CSSProperties}
-        animate={{ offsetDistance: ["0%", "100%"] } as unknown as Record<string, unknown>}
+        animate={{ offsetDistance: ["0%", "100%"] }}
         transition={{
           duration: 4 + (delay % 2),
           repeat: Infinity,
