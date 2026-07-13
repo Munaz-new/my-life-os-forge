@@ -1,50 +1,50 @@
-# Phase 4 — Adaptive Mission Engine
 
-Add a new `/missions` route ("Mission Center — Today's Evolution Path") that reuses the existing LifeOS glass + neon language. No changes to Phase 1/2/3 pages beyond adding a single entry-point button. Mock data only.
+# Phase 5 — Evolution Genome
+
+Add a new `/genome` route ("Evolution Genome — Your Living Intelligence Map") reusing the existing LifeOS glass + neon language. No redesign of Phase 1–4 pages, only add entry-point links.
 
 ## Route & entry points
-- New file: `src/routes/missions.tsx` — head title "Mission Center — LifeOS", meta description "Today's Evolution Path — CORE-designed daily missions".
-- Add a neon "◆ Mission Center" button in `/home` header (next to Open CORE / Open System).
-- Add matching header links in `/system` and `/core` headers for parity.
+- New file: `src/routes/genome.tsx` — head title "Evolution Genome — LifeOS", meta description "Your Living Intelligence Map — an animated neural network of your evolving capabilities."
+- Add a neon "❋ Genome" link in the headers of `/home`, `/system`, `/core`, and `/missions` for parity (single line addition per file, no layout changes).
 
 ## Mock data
-- New file: `src/lib/missions-mock.ts` exporting:
-  - `missionStatus` (status, difficulty, ETA, expectedGrowth, confidence %, generatedAt).
-  - `categories` — 8 entries (Main, Side, Recovery, Learning, Fitness, Focus, Creative, Career), each with icon, tone (primary/cyan/violet), tagline, duration, difficulty, xp.
-  - `missionDetail` — name, objective, reason, duration, difficulty, growthAreas[], expectedOutcome, prepTips[].
-  - `growthProjection` — Programming +12, Focus +8, Discipline +5, Health +3, Learning +9.
-  - `timeline` — Preparation → Execution → Reflection → Completion (each with time + blurb + state).
-  - `coreExplanation` — calm intelligent paragraph.
-  - `reflectionPrompts` — 3 questions.
+New file: `src/lib/genome-mock.ts` exporting:
+- `coreNode` — label "YOU", overall level, total XP, evolution %, status.
+- `majorNodes` — 9 domains (Learning, Career, Health, Mindset, Finance, Communication, Leadership, Creativity, Fitness) each with: id, label, glyph, tone (primary/cyan/violet), level, progress %, xp, status ("ascending" | "stable" | "dormant"), angle (for radial layout), children[].
+- `children` per domain (3–5 sub-skills each, e.g. Learning → Programming/AI/Linux/Databases/Algorithms/Math; Communication → Public Speaking/Writing/Listening/Negotiation; Health → Sleep/Nutrition/Exercise/Recovery/Stress; etc.) with level, xp, growth %, weeklyTrend spark[7], strengths[], weaknesses[], related[] (ids).
+- `forecast` — mostLikelyNext, fastestGrowing, losingMomentum, recommendedFocus (each: skill name, reason, delta %).
+- `heatmap` — array of { domain, intensity 0–1, band: "strong" | "balanced" | "weak" } for the 9 domains.
+- `timeline` — 12 months of { month, level, xp, highlight } for animated evolution progression.
 
-## New components (`src/components/lifeos/missions/`)
-- `MissionHeroCard.tsx` — large glass card with animated status ring, difficulty chip, ETA, expected growth, confidence bar (uses `useCountUp`), generated timestamp, subtle scanning-line motion.
-- `MissionCard.tsx` — category tile with icon badge, tagline, duration/difficulty/xp meta, tone-based accent border + hover glow lift.
-- `MissionDetailCard.tsx` — structured layout: name, objective, "Why CORE selected this", meta grid (duration/difficulty), growth-area chips, expected outcome, preparation tips list with check glyphs.
-- `GrowthProjection.tsx` — vertical list of animated bars (Framer Motion width animation) with count-up percentages and tone colors.
-- `MissionTimeline.tsx` — 4-step animated vertical timeline (Preparation/Execution/Reflection/Completion) with connecting neon line drawn via `pathLength`, pulsing active node.
-- `MissionReason.tsx` — dedicated CORE explanation card, calm tone, orb glyph, quoted paragraph.
-- `MissionControls.tsx` — button row: Accept Mission (primary neon), Regenerate, Save For Later, Skip Today, Preview Tomorrow (disabled "Coming Soon" chip). Buttons are visual only.
-- `ReflectionCard.tsx` — placeholder card with three prompts and disabled glass textareas.
-- `AmbientParticles.tsx` — small reusable floating-particles layer (motion divs w/ randomized slow drift) for hero background. Kept lightweight.
+## New components (`src/components/lifeos/genome/`)
+- `GenomeCanvas.tsx` — the centerpiece. Fixed-aspect SVG stage (responsive, ~720px tall on desktop) holding: ambient particle layer, animated connections, major nodes on a radial ring, and the core node at center. Handles selection state (which node is expanded) via local state; emits selected id to parent for the detail card.
+- `GenomeCoreNode.tsx` — pulsing core "YOU" node: layered breathing rings (Framer Motion scale/opacity loops), neon gradient fill from existing tokens, level readout in center.
+- `GenomeNode.tsx` — major/child node component: soft glow circle, glyph, label, small level chip, subtle idle drift (motion `animate` with slow y offset), hover lift + brighter glow, active-state ring. Tone drives accent color via existing CSS vars.
+- `GenomeConnection.tsx` — animated SVG line/curve between two points: `pathLength` draw-in on mount, opacity tied to combined level (higher levels → brighter), and a traveling particle (small circle animated along the path via `offsetDistance` / motion `animate` on `cx/cy` using precomputed samples). Renders as `<g>` so it composes inside `GenomeCanvas`.
+- `SkillCard.tsx` — expanded detail panel that appears beside/below the canvas when a node is selected: name, level, XP, growth %, recent progress bar, weekly trend sparkline (reuse the sparkline pattern from `LifeDomainCard`), strengths chips, weaknesses chips, related skills chips (clicking a related chip re-selects that node).
+- `ForecastCard.tsx` — 4 stacked mini-cards inside an `AnalysisCard`: Most Likely Next, Fastest Growing, Losing Momentum, Recommended Focus. Each with icon, skill, delta, one-line reason.
+- `Heatmap.tsx` — radial heatmap: 9 wedges around a center, each wedge's radial extent + fill opacity driven by `intensity`, colored by band (strong=primary, balanced=cyan, weak=violet/amber). Domain labels around the outside. Uses SVG + Framer Motion for wedge grow-in.
+- `EvolutionTimeline.tsx` — horizontal 12-month timeline: animated line chart of level over time (SVG polyline with `pathLength` draw), month ticks, hover/tap reveals highlight blurb; subtle neon area fill under the line.
+- `GenomeParticles.tsx` — reusable slow-drift particle field for the canvas background (lighter variant of the existing `AmbientParticles`).
 
-## Page composition (`/missions`)
-Sections wrapped in the existing `Section` pattern (eyebrow + title, staggered fade-in):
-1. Header (LogoMark + links back to Home / CORE / System).
-2. Hero — `AmbientParticles` + `MissionHeroCard` with title "Mission Center" and subtitle "Today's Evolution Path".
-3. CORE Explanation — `MissionReason`.
-4. Mission Categories — responsive grid of 8 `MissionCard`s.
-5. Today's Mission Detail — `MissionDetailCard`.
-6. Growth Projection — `GrowthProjection` inside an `AnalysisCard` (reuse existing).
-7. Mission Timeline — `MissionTimeline` inside `AnalysisCard`.
-8. Mission Controls — `MissionControls`.
-9. Reflection — `ReflectionCard`.
+All components use existing tokens from `src/styles.css` (`glass`, `text-gradient`, `--gradient-hero`, `--glow-primary`, `--glow-cyan`, `--cyan-accent`, `--shadow-neon`, etc.). No new tokens, no new deps.
 
-## Motion & polish
-- Reuse `useCountUp` for confidence %, XP, growth %s.
-- Staggered section entrances matching `/core` and `/system`.
-- Hover glow + subtle lift on category cards using existing tokens.
-- All colors, radii, glass utilities, gradients come from `src/styles.css` — no new tokens.
+## Page composition (`/genome`)
+Sections wrapped in the same `Section` pattern used in `/core` and `/missions`:
+1. Header — `LogoMark` + links back to Home / CORE / System / Missions.
+2. Hero — eyebrow "Living Intelligence Map", title "Evolution Genome", short subtitle line, status chip ("Genome Online · Synchronized {time}").
+3. Genome Canvas — full-width `AnalysisCard` wrapping `GenomeCanvas` on the left and `SkillCard` on the right (stacks on mobile). Selecting a major node expands its children into an inner ring with animated connections; selecting any node updates `SkillCard`. Default selection = core node (shows overall stats).
+4. Evolution Forecast — `ForecastCard` grid.
+5. Growth Heatmap — `Heatmap` inside an `AnalysisCard`.
+6. Evolution Timeline — `EvolutionTimeline` inside an `AnalysisCard`.
+
+## Motion & interaction
+- Core node: continuous breathing (scale 1 → 1.04 → 1, 6s loop) + halo pulse.
+- Major nodes: staggered fade/scale-in on mount, gentle idle drift, hover brighten.
+- Connections: draw-in on mount (staggered), brightness ∝ child level, one traveling particle per active connection.
+- Selecting a major node: smooth expand — children ring fades/scales in around it, unrelated major nodes dim slightly, `SkillCard` cross-fades to new content.
+- Reuse `useCountUp` for level, XP, growth %, evolution %.
+- Ambient particles behind the canvas (via `GenomeParticles`), matching the calm tone of `AmbientBackground`.
 
 ## Out of scope
-No mission logic, no persistence, no AI, no backend, no notifications, no edits to prior pages beyond adding entry-point buttons.
+No real skill logic, no persistence, no AI, no backend, no edits to prior pages beyond adding the single `❋ Genome` header link in `/home`, `/system`, `/core`, `/missions`.
