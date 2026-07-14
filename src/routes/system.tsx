@@ -96,6 +96,12 @@ function SystemPage() {
             ❋ Genome
           </Link>
           <Link
+            to="/memory"
+            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
+          >
+            ⬢ Memory
+          </Link>
+          <Link
             to="/core"
             className="rounded-xl px-4 py-2 text-xs font-semibold text-primary-foreground shadow-[var(--shadow-neon)] transition hover:brightness-110"
             style={{ background: "var(--gradient-hero)" }}
