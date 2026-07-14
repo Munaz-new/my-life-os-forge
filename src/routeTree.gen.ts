@@ -13,6 +13,7 @@ import { Route as SystemRouteImport } from './routes/system'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MissionsRouteImport } from './routes/missions'
+import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as GenomeRouteImport } from './routes/genome'
 import { Route as CoreRouteImport } from './routes/core'
@@ -38,6 +39,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const MissionsRoute = MissionsRouteImport.update({
   id: '/missions',
   path: '/missions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemoryRoute = MemoryRouteImport.update({
+  id: '/memory',
+  path: '/memory',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/core': typeof CoreRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
+  '/memory': typeof MemoryRoute
   '/missions': typeof MissionsRoute
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/core': typeof CoreRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
+  '/memory': typeof MemoryRoute
   '/missions': typeof MissionsRoute
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/core': typeof CoreRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
+  '/memory': typeof MemoryRoute
   '/missions': typeof MissionsRoute
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/core'
     | '/genome'
     | '/home'
+    | '/memory'
     | '/missions'
     | '/onboarding'
     | '/setup'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/core'
     | '/genome'
     | '/home'
+    | '/memory'
     | '/missions'
     | '/onboarding'
     | '/setup'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/core'
     | '/genome'
     | '/home'
+    | '/memory'
     | '/missions'
     | '/onboarding'
     | '/setup'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   CoreRoute: typeof CoreRoute
   GenomeRoute: typeof GenomeRoute
   HomeRoute: typeof HomeRoute
+  MemoryRoute: typeof MemoryRoute
   MissionsRoute: typeof MissionsRoute
   OnboardingRoute: typeof OnboardingRoute
   SetupRoute: typeof SetupRoute
@@ -187,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/missions'
       fullPath: '/missions'
       preLoaderRoute: typeof MissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/memory': {
+      id: '/memory'
+      path: '/memory'
+      fullPath: '/memory'
+      preLoaderRoute: typeof MemoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -250,6 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoreRoute: CoreRoute,
   GenomeRoute: GenomeRoute,
   HomeRoute: HomeRoute,
+  MemoryRoute: MemoryRoute,
   MissionsRoute: MissionsRoute,
   OnboardingRoute: OnboardingRoute,
   SetupRoute: SetupRoute,
