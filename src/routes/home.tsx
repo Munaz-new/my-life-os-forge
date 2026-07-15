@@ -93,6 +93,13 @@ function Home() {
               <span aria-hidden>→</span>
             </Link>
             <Link
+              to="/evolution"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-foreground/90 transition hover:bg-white/10"
+            >
+              ◈ Evolution Review
+              <span aria-hidden>→</span>
+            </Link>
+            <Link
               to="/memory"
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-foreground/90 transition hover:bg-white/10"
             >
