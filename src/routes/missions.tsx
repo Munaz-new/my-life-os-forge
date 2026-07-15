@@ -74,6 +74,12 @@ function MissionsPage() {
         </Link>
         <div className="flex flex-wrap items-center gap-2">
           <Link
+            to="/evolution"
+            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
+          >
+            ◈ Evolution
+          </Link>
+          <Link
             to="/genome"
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
           >
