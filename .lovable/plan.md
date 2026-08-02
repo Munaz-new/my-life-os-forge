@@ -1,50 +1,33 @@
-## Phase 7 — CORE Evolution Engine
+## Phase 8 — CORE Intelligence Architecture
 
-Build a new `/evolution` route that presents CORE's daily Evolution Review — how today's choices shape long-term growth. Pure UI + mock data, matching the existing futuristic glass/neon identity (no redesigns to prior pages).
+Introduce a client-side intelligence layer that every module talks to, plus a hidden Developer Preview page. No visual redesign of existing pages, mock data only.
 
-### Route & navigation
-- New file: `src/routes/evolution.tsx` with head meta ("Evolution Review — How Today Changed You").
-- Add "◈ Evolution" links to existing headers on `/home`, `/core`, `/missions`, `/system`, `/genome`, `/memory` (nav-only additions).
+### Core layer (`src/lib/core-engine/`)
+- `types.ts` — event union and payloads: `MissionEvent`, `SkillEvent`, `MemoryEvent`, `GrowthEvent`, `HealthEvent`, `RecommendationEvent`. Shared shape: `{ id, type, module, label, at, payload, tone }`.
+- `event-bus.ts` — tiny pub/sub (`emit`, `on`, `off`, `history`), capped ring buffer of recent events, subscription via `useSyncExternalStore`.
+- `core-state.ts` — mock CORE State store: current focus, current goal, current mission, learning velocity, growth momentum, energy, recovery, mood, consistency, plus `lastUpdated`. Reducer applies events to state.
+- `module-registry.ts` — registers the six modules (Dashboard, Mission Center, System, Genome, Memory, Evolution Review) with id, label, route, glyph, status (online/idle), last event time, emitted event types.
+- Engine placeholders: `recommendation-engine.ts`, `memory-engine.ts`, `growth-engine.ts`, `mission-engine.ts` — each a named object with documented no-op/mock methods returning mock results and emitting events.
+- `flows.ts` — declarative interaction flows (Mission Complete → Genome → Evolution Review → Memory → Dashboard; Goal Changed → recommendations → mission regenerated → Dashboard) executed step-by-step with small delays so the timeline shows the cascade.
+- `seed.ts` — seeded timeline entries (09:15 Mission Generated, 09:45 Programming Improved, …) built lazily, never at module scope.
 
-### Mock data
-- New `src/lib/evolution-mock.ts`:
-  - Today's evolution: `{ growth, setbacks, net, score }` (percent values).
-  - Evolution summary lines (consistency strengthened, programming +, recovery -, etc.).
-  - Decision impacts: array of `{ title, type: positive|negative, effects: [{label, delta}], reason }` (e.g. Completed Coding Session, Skipped Exercise, Deep Focus Block, Late Sleep).
-  - Trajectory series: 14-day array of `{ day, score, direction }`; overall direction label ("Improving").
-  - Future projection: `{ days30, days90, days365 }` each with level delta, score, headline.
-  - Alternate timelines: array of counterfactuals `{ choice, actual, alternate, deltaLabel, tone }`.
-  - Reflections: `{ improved[], slowed[], changeTomorrow[] }`.
-  - Tomorrow preview: `{ energy, focus, challenges[], mission }`.
-  - Evolution Score breakdown across 7 axes (Learning, Health, Focus, Discipline, Relationships, Creativity, Career) with per-axis score and delta.
+### Provider + hooks
+- `src/components/core/CoreProvider.tsx` mounted in `__root.tsx` around `<Outlet />`: initializes state/registry on the client (in `useEffect`), no SSR side effects.
+- Hooks: `useCoreState()`, `useCoreEvents(limit?)`, `useEmitCoreEvent()`, `useModuleRegistry()`.
 
-### Components (`src/components/lifeos/evolution/`)
-- `EvolutionHero.tsx` — animated radial chart showing today's evolution %, with growth/setbacks/net/score tiles.
-- `EvolutionSummary.tsx` — glass card listing CORE's narrative summary lines with tone-colored glyphs.
-- `DecisionImpactCard.tsx` — decision card (title, positive/negative tone, chip list of effects, reason line).
-- `TrajectoryGraph.tsx` — animated SVG line/area chart of the 14-day evolution score with direction label and glowing marker.
-- `ProjectionCard.tsx` — futuristic card for 30/90/365-day projections (used 3× in a grid).
-- `TimelineComparison.tsx` — alternate timeline visualization: side-by-side dual paths (actual vs alternate) with animated divergence and delta callout.
-- `ReflectionCard.tsx` — three-column reflection card (improved / slowed / change tomorrow) with animated bullet reveal.
-- `TomorrowPreview.tsx` — glass card showing projected energy ring, recommended focus, likely challenges, suggested mission.
-- `EvolutionScoreRadar.tsx` — animated radar/heptagon chart across the 7 axes with per-axis score + delta chips.
-- `EvolutionParticles.tsx` — ambient particles (reuse pattern from memory/genome).
+### Module wiring (no UI redesign)
+Each existing page registers itself on mount and emits its mock events from existing controls only — no new buttons, no layout changes:
+- Missions: accept/complete actions emit `MissionEvent` and run the Mission Complete flow.
+- Genome: node selection emits `SkillEvent`.
+- Memory: pin/select emits `MemoryEvent`.
+- Evolution Review: mount emits `GrowthEvent` (review finished).
+- System: mount emits `HealthEvent` (energy/recovery snapshot).
+- Dashboard: subscribes only; renders nothing new.
 
-### Page layout (top → bottom)
-1. Hero — "Evolution Review / How Today Changed You" with ambient particles + `EvolutionHero` radial.
-2. `EvolutionSummary` — CORE's narrative of the day.
-3. Decision Impact grid — `DecisionImpactCard` × N.
-4. `TrajectoryGraph` — 14-day direction chart.
-5. Future Projection grid — three `ProjectionCard`s (30/90/365 days).
-6. `TimelineComparison` — alternate-choice visualizations.
-7. `ReflectionCard` — improved / slowed / change tomorrow.
-8. `TomorrowPreview`.
-9. `EvolutionScoreRadar` — 7-axis Evolution Score.
+### Developer Preview page
+- New route `src/routes/dev.tsx` (hidden — not linked from any nav; opened by URL). Dev Mode toggle stored in `localStorage` (read in `useEffect`); when off, the page shows a gated notice.
+- Sections, all in existing glass/neon language: CORE State grid, Connected Modules list with status dots, Event Timeline (live, timestamped, tone-colored), System Health bars, Mock Intelligence Pipeline diagram (input → engines → modules) with a "Run flow" control to trigger the two demo flows.
+- Own `head()` metadata, `robots: noindex`.
 
-### Design & motion
-- Reuse existing tokens: glass surfaces, neon shadows, tone colors from `genome-mock` (primary/cyan/violet/destructive/etc.).
-- Framer Motion: staggered fade-ins per section, animated radial fill on hero, path-length draw on trajectory, traveling gradient on alternate timelines, radar polygon draw-in, glowing card hovers.
-- No new theme tokens, no changes to existing pages beyond one nav link each.
-
-### Out of scope
-No backend, no AI, no database, no real calculations. Mock data only.
+### Constraints
+No backend, no API, no AI, no auth changes, no changes to existing page visuals beyond emit hooks.
