@@ -17,6 +17,7 @@ import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as GenomeRouteImport } from './routes/genome'
 import { Route as EvolutionRouteImport } from './routes/evolution'
+import { Route as DevtestRouteImport } from './routes/devtest'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoreRouteImport } from './routes/core'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -63,6 +64,11 @@ const EvolutionRoute = EvolutionRouteImport.update({
   path: '/evolution',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevtestRoute = DevtestRouteImport.update({
+  id: '/devtest',
+  path: '/devtest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevRoute = DevRouteImport.update({
   id: '/dev',
   path: '/dev',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/core': typeof CoreRoute
   '/dev': typeof DevRoute
+  '/devtest': typeof DevtestRoute
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/core': typeof CoreRoute
   '/dev': typeof DevRoute
+  '/devtest': typeof DevtestRoute
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/core': typeof CoreRoute
   '/dev': typeof DevRoute
+  '/devtest': typeof DevtestRoute
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/core'
     | '/dev'
+    | '/devtest'
     | '/evolution'
     | '/genome'
     | '/home'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/core'
     | '/dev'
+    | '/devtest'
     | '/evolution'
     | '/genome'
     | '/home'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/core'
     | '/dev'
+    | '/devtest'
     | '/evolution'
     | '/genome'
     | '/home'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   CoreRoute: typeof CoreRoute
   DevRoute: typeof DevRoute
+  DevtestRoute: typeof DevtestRoute
   EvolutionRoute: typeof EvolutionRoute
   GenomeRoute: typeof GenomeRoute
   HomeRoute: typeof HomeRoute
@@ -256,6 +269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvolutionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/devtest': {
+      id: '/devtest'
+      path: '/devtest'
+      fullPath: '/devtest'
+      preLoaderRoute: typeof DevtestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev': {
       id: '/dev'
       path: '/dev'
@@ -309,6 +329,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   CoreRoute: CoreRoute,
   DevRoute: DevRoute,
+  DevtestRoute: DevtestRoute,
   EvolutionRoute: EvolutionRoute,
   GenomeRoute: GenomeRoute,
   HomeRoute: HomeRoute,
