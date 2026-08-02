@@ -12,6 +12,7 @@ import { MemoryConnection } from "@/components/lifeos/memory/MemoryConnection";
 import { MemoryGraph } from "@/components/lifeos/memory/MemoryGraph";
 import { ForgottenMemories } from "@/components/lifeos/memory/ForgottenMemories";
 import { MemoryDetail } from "@/components/lifeos/memory/MemoryDetail";
+import { memoryEngine, useCoreModule } from "@/lib/core-engine";
 import {
   activeMemories,
   memoryById,
@@ -65,8 +66,13 @@ function Section({
 }
 
 function MemoryPage() {
+  useCoreModule("memory");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const recallMemory = (id: string | null) => {
+    setOpenId(id);
+    if (id) memoryEngine.record(memoryById[id]?.title ?? id, "recalled");
+  };
 
   const filtered = useMemo(
     () =>
@@ -181,14 +187,14 @@ function MemoryPage() {
                 key={m.id}
                 memory={m}
                 index={i}
-                onOpen={() => setOpenId(m.id)}
+                onOpen={() => recallMemory(m.id)}
               />
             ))}
           </div>
         </Section>
 
         <Section title="Vault Constellation" eyebrow="Graph" delay={0.25}>
-          <MemoryGraph onOpen={setOpenId} />
+          <MemoryGraph onOpen={recallMemory} />
         </Section>
 
         <Section title="Featured Connection" eyebrow="Trace" delay={0.3}>
@@ -211,7 +217,7 @@ function MemoryPage() {
                   key={m.id}
                   memory={m}
                   index={i}
-                  onOpen={() => setOpenId(m.id)}
+                  onOpen={() => recallMemory(m.id)}
                 />
               ))}
             </div>
@@ -219,18 +225,18 @@ function MemoryPage() {
         </Section>
 
         <Section title="Memory Timeline" eyebrow="Chronology" delay={0.4}>
-          <MemoryTimeline onOpen={setOpenId} />
+          <MemoryTimeline onOpen={recallMemory} />
         </Section>
 
         <Section title="Forgotten Memories" eyebrow="Fading" delay={0.45}>
-          <ForgottenMemories onOpen={setOpenId} />
+          <ForgottenMemories onOpen={recallMemory} />
         </Section>
       </div>
 
       <MemoryDetail
         memory={openMemory}
         onClose={() => setOpenId(null)}
-        onOpen={setOpenId}
+        onOpen={recallMemory}
       />
     </main>
   );

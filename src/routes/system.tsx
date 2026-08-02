@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
@@ -12,6 +13,7 @@ import { LifeDomainCard } from "@/components/lifeos/system/LifeDomainCard";
 import { ProgressRing } from "@/components/lifeos/system/ProgressRing";
 import { FloatingStatusPanel } from "@/components/lifeos/system/FloatingStatusPanel";
 import { useCountUp } from "@/hooks/use-count-up";
+import { eventBus, useCoreModule } from "@/lib/core-engine";
 import {
   attributes,
   buffs,
@@ -72,6 +74,16 @@ function Section({
 }
 
 function SystemPage() {
+  useCoreModule("system");
+  useEffect(() => {
+    eventBus.emit({
+      type: "HealthEvent",
+      module: "system",
+      tone: "cyan",
+      label: "Vitals snapshot synced",
+      payload: { metric: "recovery", value: 58, delta: 3 },
+    });
+  }, []);
   const overallPct = Math.round((operator.xpInLevel / operator.xpToNext) * 100);
   const overallAnimated = useCountUp(overallPct, 1600);
   const lifetime = useCountUp(operator.totalXp, 1600);

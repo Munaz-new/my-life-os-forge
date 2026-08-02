@@ -12,6 +12,7 @@ import { RiskCard } from "@/components/lifeos/core/RiskCard";
 import { MomentumChart } from "@/components/lifeos/core/MomentumChart";
 import { RecommendationCard } from "@/components/lifeos/core/RecommendationCard";
 import { CoreCommandButton } from "@/components/lifeos/core/CoreCommandButton";
+import { useCoreModule } from "@/lib/core-engine";
 import {
   energyRings,
   opportunities,
@@ -72,6 +73,7 @@ function Section({
 }
 
 function CorePage() {
+  useCoreModule("core");
   const sync = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (

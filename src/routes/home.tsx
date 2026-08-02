@@ -4,6 +4,7 @@ import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
 import { GlassCard } from "@/components/lifeos/GlassCard";
 import { XPBar } from "@/components/lifeos/XPBar";
 import { LogoMark } from "@/components/lifeos/LogoMark";
+import { useCoreModule } from "@/lib/core-engine";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -32,6 +33,7 @@ const achievements = [
 ];
 
 function Home() {
+  useCoreModule("dashboard");
   return (
     <main className="relative min-h-screen overflow-hidden pb-24">
       <AmbientBackground />

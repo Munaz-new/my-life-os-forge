@@ -17,6 +17,7 @@ import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as GenomeRouteImport } from './routes/genome'
 import { Route as EvolutionRouteImport } from './routes/evolution'
+import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoreRouteImport } from './routes/core'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -62,6 +63,11 @@ const EvolutionRoute = EvolutionRouteImport.update({
   path: '/evolution',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevRoute = DevRouteImport.update({
+  id: '/dev',
+  path: '/dev',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoreRoute = CoreRouteImport.update({
   id: '/core',
   path: '/core',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/core': typeof CoreRoute
+  '/dev': typeof DevRoute
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/core': typeof CoreRoute
+  '/dev': typeof DevRoute
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/core': typeof CoreRoute
+  '/dev': typeof DevRoute
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/core'
+    | '/dev'
     | '/evolution'
     | '/genome'
     | '/home'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/core'
+    | '/dev'
     | '/evolution'
     | '/genome'
     | '/home'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/core'
+    | '/dev'
     | '/evolution'
     | '/genome'
     | '/home'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   CoreRoute: typeof CoreRoute
+  DevRoute: typeof DevRoute
   EvolutionRoute: typeof EvolutionRoute
   GenomeRoute: typeof GenomeRoute
   HomeRoute: typeof HomeRoute
@@ -243,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvolutionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev': {
+      id: '/dev'
+      path: '/dev'
+      fullPath: '/dev'
+      preLoaderRoute: typeof DevRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/core': {
       id: '/core'
       path: '/core'
@@ -288,6 +308,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   CoreRoute: CoreRoute,
+  DevRoute: DevRoute,
   EvolutionRoute: EvolutionRoute,
   GenomeRoute: GenomeRoute,
   HomeRoute: HomeRoute,
@@ -300,13 +321,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
