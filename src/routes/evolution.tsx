@@ -13,7 +13,8 @@ import { ReflectionCard } from "@/components/lifeos/evolution/ReflectionCard";
 import { TomorrowPreview } from "@/components/lifeos/evolution/TomorrowPreview";
 import { EvolutionScoreRadar } from "@/components/lifeos/evolution/EvolutionScoreRadar";
 import { decisions, projections } from "@/lib/evolution-mock";
-import { useCoreModule } from "@/lib/core-engine";
+import { useEffect } from "react";
+import { growthEngine, useCoreModule } from "@/lib/core-engine";
 
 export const Route = createFileRoute("/evolution")({
   head: () => ({
@@ -62,6 +63,9 @@ function Section({
 
 function EvolutionPage() {
   useCoreModule("evolution");
+  useEffect(() => {
+    growthEngine.recordGrowth("Evolution Review", 1, "Daily review opened");
+  }, []);
   return (
     <main className="relative min-h-screen overflow-hidden pb-32">
       <AmbientBackground />

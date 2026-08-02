@@ -187,14 +187,14 @@ function MemoryPage() {
                 key={m.id}
                 memory={m}
                 index={i}
-                onOpen={() => setOpenId(m.id)}
+                onOpen={() => openMemory(m.id)}
               />
             ))}
           </div>
         </Section>
 
         <Section title="Vault Constellation" eyebrow="Graph" delay={0.25}>
-          <MemoryGraph onOpen={setOpenId} />
+          <MemoryGraph onOpen={openMemory} />
         </Section>
 
         <Section title="Featured Connection" eyebrow="Trace" delay={0.3}>
@@ -217,7 +217,7 @@ function MemoryPage() {
                   key={m.id}
                   memory={m}
                   index={i}
-                  onOpen={() => setOpenId(m.id)}
+                  onOpen={() => openMemory(m.id)}
                 />
               ))}
             </div>
@@ -225,18 +225,18 @@ function MemoryPage() {
         </Section>
 
         <Section title="Memory Timeline" eyebrow="Chronology" delay={0.4}>
-          <MemoryTimeline onOpen={setOpenId} />
+          <MemoryTimeline onOpen={openMemory} />
         </Section>
 
         <Section title="Forgotten Memories" eyebrow="Fading" delay={0.45}>
-          <ForgottenMemories onOpen={setOpenId} />
+          <ForgottenMemories onOpen={openMemory} />
         </Section>
       </div>
 
       <MemoryDetail
         memory={openMemory}
         onClose={() => setOpenId(null)}
-        onOpen={setOpenId}
+        onOpen={openMemory}
       />
     </main>
   );
