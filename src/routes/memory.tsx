@@ -12,8 +12,8 @@ import { MemoryConnection } from "@/components/lifeos/memory/MemoryConnection";
 import { MemoryGraph } from "@/components/lifeos/memory/MemoryGraph";
 import { ForgottenMemories } from "@/components/lifeos/memory/ForgottenMemories";
 import { MemoryDetail } from "@/components/lifeos/memory/MemoryDetail";
-import {
 import { useCoreModule } from "@/lib/core-engine";
+import {
   activeMemories,
   memoryById,
   memoryStats,

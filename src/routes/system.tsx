@@ -12,8 +12,8 @@ import { LifeDomainCard } from "@/components/lifeos/system/LifeDomainCard";
 import { ProgressRing } from "@/components/lifeos/system/ProgressRing";
 import { FloatingStatusPanel } from "@/components/lifeos/system/FloatingStatusPanel";
 import { useCountUp } from "@/hooks/use-count-up";
-import {
 import { useCoreModule } from "@/lib/core-engine";
+import {
   attributes,
   buffs,
   debuffs,

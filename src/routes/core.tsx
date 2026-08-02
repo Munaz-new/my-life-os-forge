@@ -12,8 +12,8 @@ import { RiskCard } from "@/components/lifeos/core/RiskCard";
 import { MomentumChart } from "@/components/lifeos/core/MomentumChart";
 import { RecommendationCard } from "@/components/lifeos/core/RecommendationCard";
 import { CoreCommandButton } from "@/components/lifeos/core/CoreCommandButton";
-import {
 import { useCoreModule } from "@/lib/core-engine";
+import {
   energyRings,
   opportunities,
   priorities,
