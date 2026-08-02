@@ -35,7 +35,9 @@ export const eventBus = {
   },
   on(listener: Listener) {
     listeners.add(listener);
-    return () => listeners.delete(listener);
+    return () => {
+      listeners.delete(listener);
+    };
   },
   off(listener: Listener) {
     listeners.delete(listener);
@@ -45,7 +47,9 @@ export const eventBus = {
   },
   subscribe(listener: StoreListener) {
     storeListeners.add(listener);
-    return () => storeListeners.delete(listener);
+    return () => {
+      storeListeners.delete(listener);
+    };
   },
   clear() {
     events = [];
