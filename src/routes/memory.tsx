@@ -69,9 +69,9 @@ function MemoryPage() {
   useCoreModule("memory");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
-  const openMemory = (id: string | null) => {
+  const recallMemory = (id: string | null) => {
     setOpenId(id);
-    if (id) memoryEngine.record(memoryById(id)?.title ?? id, "recalled");
+    if (id) memoryEngine.record(memoryById[id]?.title ?? id, "recalled");
   };
 
   const filtered = useMemo(
