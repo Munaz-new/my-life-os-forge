@@ -13,6 +13,7 @@ import { MissionReason } from "@/components/lifeos/missions/MissionReason";
 import { MissionControls } from "@/components/lifeos/missions/MissionControls";
 import { ReflectionCard } from "@/components/lifeos/missions/ReflectionCard";
 import { categories } from "@/lib/missions-mock";
+import { useCoreModule } from "@/lib/core-engine";
 
 export const Route = createFileRoute("/missions")({
   head: () => ({
@@ -60,6 +61,7 @@ function Section({
 }
 
 function MissionsPage() {
+  useCoreModule("missions");
   return (
     <main className="relative min-h-screen overflow-hidden pb-32">
       <AmbientBackground />

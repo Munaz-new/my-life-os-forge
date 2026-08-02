@@ -13,6 +13,7 @@ import { MemoryGraph } from "@/components/lifeos/memory/MemoryGraph";
 import { ForgottenMemories } from "@/components/lifeos/memory/ForgottenMemories";
 import { MemoryDetail } from "@/components/lifeos/memory/MemoryDetail";
 import {
+import { useCoreModule } from "@/lib/core-engine";
   activeMemories,
   memoryById,
   memoryStats,
@@ -65,6 +66,7 @@ function Section({
 }
 
 function MemoryPage() {
+  useCoreModule("memory");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
 

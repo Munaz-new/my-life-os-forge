@@ -9,6 +9,7 @@ import { SkillCard } from "@/components/lifeos/genome/SkillCard";
 import { ForecastCard } from "@/components/lifeos/genome/ForecastCard";
 import { Heatmap } from "@/components/lifeos/genome/Heatmap";
 import { EvolutionTimeline } from "@/components/lifeos/genome/EvolutionTimeline";
+import { useCoreModule } from "@/lib/core-engine";
 
 export const Route = createFileRoute("/genome")({
   head: () => ({
@@ -62,6 +63,7 @@ function Section({
 }
 
 function GenomePage() {
+  useCoreModule("genome");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const sync = new Date().toLocaleTimeString([], {
     hour: "2-digit",

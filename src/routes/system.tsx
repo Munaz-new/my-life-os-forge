@@ -13,6 +13,7 @@ import { ProgressRing } from "@/components/lifeos/system/ProgressRing";
 import { FloatingStatusPanel } from "@/components/lifeos/system/FloatingStatusPanel";
 import { useCountUp } from "@/hooks/use-count-up";
 import {
+import { useCoreModule } from "@/lib/core-engine";
   attributes,
   buffs,
   debuffs,
@@ -72,6 +73,7 @@ function Section({
 }
 
 function SystemPage() {
+  useCoreModule("system");
   const overallPct = Math.round((operator.xpInLevel / operator.xpToNext) * 100);
   const overallAnimated = useCountUp(overallPct, 1600);
   const lifetime = useCountUp(operator.totalXp, 1600);
