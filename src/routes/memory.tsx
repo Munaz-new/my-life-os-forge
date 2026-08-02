@@ -12,7 +12,7 @@ import { MemoryConnection } from "@/components/lifeos/memory/MemoryConnection";
 import { MemoryGraph } from "@/components/lifeos/memory/MemoryGraph";
 import { ForgottenMemories } from "@/components/lifeos/memory/ForgottenMemories";
 import { MemoryDetail } from "@/components/lifeos/memory/MemoryDetail";
-import { useCoreModule } from "@/lib/core-engine";
+import { memoryEngine, useCoreModule } from "@/lib/core-engine";
 import {
   activeMemories,
   memoryById,
@@ -69,6 +69,10 @@ function MemoryPage() {
   useCoreModule("memory");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const openMemory = (id: string | null) => {
+    setOpenId(id);
+    if (id) memoryEngine.record(memoryById(id)?.title ?? id, "recalled");
+  };
 
   const filtered = useMemo(
     () =>

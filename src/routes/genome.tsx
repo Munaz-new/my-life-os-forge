@@ -9,7 +9,7 @@ import { SkillCard } from "@/components/lifeos/genome/SkillCard";
 import { ForecastCard } from "@/components/lifeos/genome/ForecastCard";
 import { Heatmap } from "@/components/lifeos/genome/Heatmap";
 import { EvolutionTimeline } from "@/components/lifeos/genome/EvolutionTimeline";
-import { useCoreModule } from "@/lib/core-engine";
+import { growthEngine, useCoreModule } from "@/lib/core-engine";
 
 export const Route = createFileRoute("/genome")({
   head: () => ({
@@ -65,6 +65,10 @@ function Section({
 function GenomePage() {
   useCoreModule("genome");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selectNode = (id: string | null) => {
+    setSelectedId(id);
+    if (id) growthEngine.applySkillGain(id.replace(/-/g, " "), 1);
+  };
   const sync = new Date().toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
@@ -160,7 +164,7 @@ function GenomePage() {
               <div className="relative">
                 <GenomeCanvas
                   selectedId={selectedId}
-                  onSelect={setSelectedId}
+                  onSelect={selectNode}
                 />
                 <p className="mt-2 text-center text-[11px] text-muted-foreground">
                   Tap a node to expand · tap empty space to return to core
@@ -168,7 +172,7 @@ function GenomePage() {
               </div>
               <SkillCard
                 selectedId={selectedId}
-                onSelect={setSelectedId}
+                onSelect={selectNode}
               />
             </div>
           </AnalysisCard>
