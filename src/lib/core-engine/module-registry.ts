@@ -64,29 +64,31 @@ function baseRuntime(): Record<ModuleId, ModuleRuntime> {
 }
 
 let runtime = baseRuntime();
+let snapshot: ModuleRuntime[] = MODULES.map((m) => runtime[m.id]);
 const listeners = new Set<() => void>();
 
 function emitChange() {
   runtime = { ...runtime };
+  snapshot = MODULES.map((m) => runtime[m.id]);
   listeners.forEach((l) => l());
 }
 
 export const moduleRegistry = {
   list(): ModuleRuntime[] {
-    return MODULES.map((m) => runtime[m.id]);
+    return snapshot;
   },
   get(id: ModuleId) {
     return runtime[id];
   },
   register(id: ModuleId) {
     const mod = runtime[id];
-    if (!mod) return;
+    if (!mod || mod.status === "online") return;
     runtime[id] = { ...mod, status: "online" };
     emitChange();
   },
   unregister(id: ModuleId) {
     const mod = runtime[id];
-    if (!mod) return;
+    if (!mod || mod.status === "idle") return;
     runtime[id] = { ...mod, status: "idle" };
     emitChange();
   },
