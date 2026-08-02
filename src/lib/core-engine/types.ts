@@ -70,9 +70,8 @@ export type CoreEvent =
   | HealthEvent
   | RecommendationEvent;
 
-export type CoreEventInput = {
-  [K in CoreEvent as K["type"]]: Omit<K, "id" | "at"> & { at?: number };
-}[CoreEventType];
+type AsInput<T> = T extends CoreEvent ? Omit<T, "id" | "at"> & { at?: number } : never;
+export type CoreEventInput = AsInput<CoreEvent>;
 
 export interface CoreState {
   currentFocus: string;
