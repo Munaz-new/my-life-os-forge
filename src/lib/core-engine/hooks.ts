@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { attachCoreStateToBus, coreState, initialCoreState } from "./core-state";
-import { eventBus, emptyHistory } from "./event-bus";
+import { eventBus } from "./event-bus";
 import { attachRegistryToBus, moduleRegistry } from "./module-registry";
 import { seedEvents } from "./seed";
-import type { CoreEventInput, ModuleId } from "./types";
+import type { CoreEvent, CoreEventInput, CoreState, ModuleId, ModuleRuntime } from "./types";
 
 let booted = false;
 export function bootCore() {
@@ -14,32 +14,34 @@ export function bootCore() {
   eventBus.hydrate(seedEvents());
 }
 
-const serverState = initialCoreState();
-const serverModules = moduleRegistry.list();
-
-export function useCoreState() {
-  return useSyncExternalStore(
-    coreState.subscribe,
-    coreState.get,
-    () => serverState,
-  );
+export function useCoreState(): CoreState {
+  const [state, setState] = useState<CoreState>(initialCoreState);
+  useEffect(() => {
+    bootCore();
+    setState(coreState.get());
+    return coreState.subscribe(() => setState(coreState.get()));
+  }, []);
+  return state;
 }
 
-export function useCoreEvents(limit?: number) {
-  const events = useSyncExternalStore(
-    eventBus.subscribe,
-    eventBus.history,
-    () => emptyHistory,
-  );
+export function useCoreEvents(limit?: number): CoreEvent[] {
+  const [events, setEvents] = useState<CoreEvent[]>([]);
+  useEffect(() => {
+    bootCore();
+    setEvents(eventBus.history());
+    return eventBus.subscribe(() => setEvents(eventBus.history()));
+  }, []);
   return typeof limit === "number" ? events.slice(0, limit) : events;
 }
 
-export function useModuleRegistry() {
-  return useSyncExternalStore(
-    moduleRegistry.subscribe,
-    moduleRegistry.list,
-    () => serverModules,
-  );
+export function useModuleRegistry(): ModuleRuntime[] {
+  const [modules, setModules] = useState<ModuleRuntime[]>(() => moduleRegistry.list());
+  useEffect(() => {
+    bootCore();
+    setModules(moduleRegistry.list());
+    return moduleRegistry.subscribe(() => setModules(moduleRegistry.list()));
+  }, []);
+  return modules;
 }
 
 export function useEmitCoreEvent() {
