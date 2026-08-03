@@ -81,6 +81,7 @@ function EvolutionPage() {
         <div className="flex flex-wrap items-center gap-2">
           <NavLink to="/core" label="◉ CORE" />
           <NavLink to="/missions" label="◆ Missions" />
+          <NavLink to="/decisions" label="◐ Decisions" />
           <NavLink to="/genome" label="❋ Genome" />
           <NavLink to="/memory" label="⬢ Memory" />
           <NavLink to="/system" label="◈ System" />
