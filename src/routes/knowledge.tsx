@@ -119,7 +119,7 @@ function KnowledgePage() {
     eventBus.emit({
       type: "MemoryEvent",
       module: "core",
-      tone: node.tone === "destructive" || node.tone === "warning" ? "primary" : node.tone,
+      tone: node.tone,
       label: `Knowledge node inspected: ${node.label}`,
       payload: { memoryId: node.id, title: node.label, action: "recalled" },
     });
