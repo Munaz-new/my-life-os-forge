@@ -17,7 +17,7 @@ const W = 900;
 const H = 620;
 const CX = W / 2;
 const CY = H / 2;
-const R_DOMAIN = 218;
+const R_DOMAIN = 205;
 const R_LEAF = 96;
 
 interface Props {
