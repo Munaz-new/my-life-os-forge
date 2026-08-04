@@ -326,7 +326,7 @@ export const crossEdges: KEdge[] = [
   edge("health.recovery", "health.training", 52, 74, -3, 58, "Recovery debt is currently throttling training gains."),
   edge("habits.reading", "learning.systems-design", 55, 71, 6, 57, "Reading is the main inflow to systems design."),
   edge("creativity.design-taste", "projects.portfolio", 66, 79, 12, 70, "Design taste raises the perceived quality of the portfolio."),
-  edge("communication-bridge-a", "", 0, 0, 0, 0, ""),
+  
   edge("skills.communication", "career.network", 49, 72, 5, 63, "Communication reps convert into network reach."),
   edge("relationships.mentorship", "skills.leadership", 44, 68, 8, 71, "Mentoring others is the fastest leadership signal."),
   edge("finance.income", "goals.financial-runway", 62, 84, 5, 77, "Income growth is the only live input to runway."),
