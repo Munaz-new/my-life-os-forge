@@ -112,6 +112,12 @@ function MissionsPage() {
             ◈ System
           </Link>
           <Link
+            to="/knowledge"
+            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
+          >
+            ⬡ Knowledge
+          </Link>
+          <Link
             to="/home"
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-foreground/80 transition hover:bg-white/10"
           >

@@ -14,6 +14,7 @@ import { Route as SetupRouteImport } from './routes/setup'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MissionsRouteImport } from './routes/missions'
 import { Route as MemoryRouteImport } from './routes/memory'
+import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as GenomeRouteImport } from './routes/genome'
 import { Route as EvolutionRouteImport } from './routes/evolution'
@@ -47,6 +48,11 @@ const MissionsRoute = MissionsRouteImport.update({
 const MemoryRoute = MemoryRouteImport.update({
   id: '/memory',
   path: '/memory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KnowledgeRoute = KnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
+  '/knowledge': typeof KnowledgeRoute
   '/memory': typeof MemoryRoute
   '/missions': typeof MissionsRoute
   '/onboarding': typeof OnboardingRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
+  '/knowledge': typeof KnowledgeRoute
   '/memory': typeof MemoryRoute
   '/missions': typeof MissionsRoute
   '/onboarding': typeof OnboardingRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/evolution': typeof EvolutionRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
+  '/knowledge': typeof KnowledgeRoute
   '/memory': typeof MemoryRoute
   '/missions': typeof MissionsRoute
   '/onboarding': typeof OnboardingRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/evolution'
     | '/genome'
     | '/home'
+    | '/knowledge'
     | '/memory'
     | '/missions'
     | '/onboarding'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/evolution'
     | '/genome'
     | '/home'
+    | '/knowledge'
     | '/memory'
     | '/missions'
     | '/onboarding'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/evolution'
     | '/genome'
     | '/home'
+    | '/knowledge'
     | '/memory'
     | '/missions'
     | '/onboarding'
@@ -204,6 +216,7 @@ export interface RootRouteChildren {
   EvolutionRoute: typeof EvolutionRoute
   GenomeRoute: typeof GenomeRoute
   HomeRoute: typeof HomeRoute
+  KnowledgeRoute: typeof KnowledgeRoute
   MemoryRoute: typeof MemoryRoute
   MissionsRoute: typeof MissionsRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -246,6 +259,13 @@ declare module '@tanstack/react-router' {
       path: '/memory'
       fullPath: '/memory'
       preLoaderRoute: typeof MemoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/knowledge': {
+      id: '/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof KnowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -333,6 +353,7 @@ const rootRouteChildren: RootRouteChildren = {
   EvolutionRoute: EvolutionRoute,
   GenomeRoute: GenomeRoute,
   HomeRoute: HomeRoute,
+  KnowledgeRoute: KnowledgeRoute,
   MemoryRoute: MemoryRoute,
   MissionsRoute: MissionsRoute,
   OnboardingRoute: OnboardingRoute,
@@ -342,13 +363,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
