@@ -40,9 +40,11 @@ export function KnowledgeCanvas({ selectedId, expandedId, highlighted, onSelect 
       const kids = leaves.filter((l) => l.parent === d.id);
       const parent = map.get(d.id)!;
       kids.forEach((k, j) => {
-        const spread = Math.PI * 0.85;
-        const a = base - spread / 2 + (kids.length === 1 ? spread / 2 : (j / (kids.length - 1)) * spread);
-        map.set(k.id, { x: parent.x + Math.cos(a) * R_LEAF, y: parent.y + Math.sin(a) * R_LEAF, r: 13 });
+        const spread = Math.PI * 0.95;
+        const a =
+          base - spread / 2 + (kids.length === 1 ? spread / 2 : (j / (kids.length - 1)) * spread);
+        const rad = R_LEAF + (j % 2 === 0 ? 0 : 34);
+        map.set(k.id, { x: parent.x + Math.cos(a) * rad, y: parent.y + Math.sin(a) * rad, r: 13 });
       });
     });
     return map;
