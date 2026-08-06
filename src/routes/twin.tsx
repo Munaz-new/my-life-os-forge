@@ -112,7 +112,7 @@ function TwinPage() {
       module: "core",
       tone: "cyan",
       label: `Twin simulation: ${id} → ${v}`,
-      payload: { area: id, value: v },
+      payload: { metric: id, delta: v, note: "Digital Twin growth simulation" },
     });
   };
 
