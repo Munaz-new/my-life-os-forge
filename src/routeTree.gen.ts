@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TwinRouteImport } from './routes/twin'
 import { Route as SystemRouteImport } from './routes/system'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -25,6 +26,11 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
 
+const TwinRoute = TwinRouteImport.update({
+  id: '/twin',
+  path: '/twin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SystemRoute = SystemRouteImport.update({
   id: '/system',
   path: '/system',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
   '/system': typeof SystemRoute
+  '/twin': typeof TwinRoute
   '/auth/forgot': typeof AuthForgotRoute
 }
 export interface FileRoutesByTo {
@@ -133,6 +140,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
   '/system': typeof SystemRoute
+  '/twin': typeof TwinRoute
   '/auth/forgot': typeof AuthForgotRoute
 }
 export interface FileRoutesById {
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
   '/system': typeof SystemRoute
+  '/twin': typeof TwinRoute
   '/auth/forgot': typeof AuthForgotRoute
 }
 export interface FileRouteTypes {
@@ -170,6 +179,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/setup'
     | '/system'
+    | '/twin'
     | '/auth/forgot'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/setup'
     | '/system'
+    | '/twin'
     | '/auth/forgot'
   id:
     | '__root__'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/setup'
     | '/system'
+    | '/twin'
     | '/auth/forgot'
   fileRoutesById: FileRoutesById
 }
@@ -222,10 +234,18 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   SetupRoute: typeof SetupRoute
   SystemRoute: typeof SystemRoute
+  TwinRoute: typeof TwinRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/twin': {
+      id: '/twin'
+      path: '/twin'
+      fullPath: '/twin'
+      preLoaderRoute: typeof TwinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/system': {
       id: '/system'
       path: '/system'
@@ -359,17 +379,8 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   SetupRoute: SetupRoute,
   SystemRoute: SystemRoute,
+  TwinRoute: TwinRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
