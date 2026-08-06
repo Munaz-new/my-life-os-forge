@@ -107,6 +107,7 @@ function DecisionsPage() {
           <NavLink to="/memory" label="⬢ Memory" />
           <NavLink to="/evolution" label="◇ Evolution" />
           <NavLink to="/knowledge" label="⬡ Knowledge" />
+          <NavLink to="/twin" label="◬ Twin" />
           <NavLink to="/home" label="← Dashboard" />
         </div>
       </header>

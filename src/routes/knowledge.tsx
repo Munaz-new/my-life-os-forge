@@ -159,6 +159,7 @@ function KnowledgePage() {
           <NavLink to="/decisions" label="◐ Decisions" />
           <NavLink to="/genome" label="❋ Genome" />
           <NavLink to="/memory" label="⬢ Memory" />
+          <NavLink to="/twin" label="◬ Twin" />
           <NavLink to="/home" label="← Dashboard" />
         </div>
       </header>
