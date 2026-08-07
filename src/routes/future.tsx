@@ -22,6 +22,7 @@ import {
   horizons,
   scenarios,
   toneVar,
+  turningPoints,
   type FuturePath,
   type HorizonId,
 } from "@/lib/future-mock";
@@ -297,7 +298,9 @@ function FuturePage() {
 
         <Section title="Turning Points" eyebrow="Moments that bend the curve">
           <div className="grid gap-4 md:grid-cols-2">
-            {turningPointList()}
+            {turningPoints.map((p, i) => (
+              <TurningPointCard key={p.id} point={p} index={i} />
+            ))}
           </div>
         </Section>
 
@@ -335,9 +338,3 @@ function FuturePage() {
     </main>
   );
 }
-
-function turningPointList() {
-  return turningPoints.map((p, i) => <TurningPointCard key={p.id} point={p} index={i} />);
-}
-
-import { turningPoints } from "@/lib/future-mock";
