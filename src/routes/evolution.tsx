@@ -87,6 +87,7 @@ function EvolutionPage() {
           <NavLink to="/system" label="◈ System" />
           <NavLink to="/knowledge" label="⬡ Knowledge" />
           <NavLink to="/twin" label="◬ Twin" />
+          <NavLink to="/future" label="◎ Future" />
           <NavLink to="/home" label="← Dashboard" />
         </div>
       </header>
