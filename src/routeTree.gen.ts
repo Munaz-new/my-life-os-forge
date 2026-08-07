@@ -18,6 +18,7 @@ import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as GenomeRouteImport } from './routes/genome'
+import { Route as FutureRouteImport } from './routes/future'
 import { Route as EvolutionRouteImport } from './routes/evolution'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as DecisionsRouteImport } from './routes/decisions'
@@ -71,6 +72,11 @@ const GenomeRoute = GenomeRouteImport.update({
   path: '/genome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FutureRoute = FutureRouteImport.update({
+  id: '/future',
+  path: '/future',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EvolutionRoute = EvolutionRouteImport.update({
   id: '/evolution',
   path: '/evolution',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/decisions': typeof DecisionsRoute
   '/dev': typeof DevRoute
   '/evolution': typeof EvolutionRoute
+  '/future': typeof FutureRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
   '/knowledge': typeof KnowledgeRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/decisions': typeof DecisionsRoute
   '/dev': typeof DevRoute
   '/evolution': typeof EvolutionRoute
+  '/future': typeof FutureRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
   '/knowledge': typeof KnowledgeRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/decisions': typeof DecisionsRoute
   '/dev': typeof DevRoute
   '/evolution': typeof EvolutionRoute
+  '/future': typeof FutureRoute
   '/genome': typeof GenomeRoute
   '/home': typeof HomeRoute
   '/knowledge': typeof KnowledgeRoute
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/decisions'
     | '/dev'
     | '/evolution'
+    | '/future'
     | '/genome'
     | '/home'
     | '/knowledge'
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/decisions'
     | '/dev'
     | '/evolution'
+    | '/future'
     | '/genome'
     | '/home'
     | '/knowledge'
@@ -207,6 +218,7 @@ export interface FileRouteTypes {
     | '/decisions'
     | '/dev'
     | '/evolution'
+    | '/future'
     | '/genome'
     | '/home'
     | '/knowledge'
@@ -226,6 +238,7 @@ export interface RootRouteChildren {
   DecisionsRoute: typeof DecisionsRoute
   DevRoute: typeof DevRoute
   EvolutionRoute: typeof EvolutionRoute
+  FutureRoute: typeof FutureRoute
   GenomeRoute: typeof GenomeRoute
   HomeRoute: typeof HomeRoute
   KnowledgeRoute: typeof KnowledgeRoute
@@ -302,6 +315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GenomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/future': {
+      id: '/future'
+      path: '/future'
+      fullPath: '/future'
+      preLoaderRoute: typeof FutureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/evolution': {
       id: '/evolution'
       path: '/evolution'
@@ -371,6 +391,7 @@ const rootRouteChildren: RootRouteChildren = {
   DecisionsRoute: DecisionsRoute,
   DevRoute: DevRoute,
   EvolutionRoute: EvolutionRoute,
+  FutureRoute: FutureRoute,
   GenomeRoute: GenomeRoute,
   HomeRoute: HomeRoute,
   KnowledgeRoute: KnowledgeRoute,
@@ -384,13 +405,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

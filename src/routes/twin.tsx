@@ -132,6 +132,7 @@ function TwinPage() {
           <NavLink to="/core" label="◉ CORE" />
           <NavLink to="/knowledge" label="⬡ Knowledge" />
           <NavLink to="/genome" label="❋ Genome" />
+          <NavLink to="/future" label="◎ Future" />
           <NavLink to="/home" label="← Dashboard" />
         </div>
       </header>
