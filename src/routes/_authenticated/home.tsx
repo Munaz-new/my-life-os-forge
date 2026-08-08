@@ -213,41 +213,71 @@ function Home() {
 
           {/* Main Quest */}
           <GlassCard className="lg:col-span-2">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Today's Main Quest
-                </p>
-                <h3 className="mt-2 text-2xl font-semibold">
-                  Deep Focus: 90-Minute Session
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Enter a single-task flow state. No context switching. No notifications.
-                </p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">
+              Today's Main Quest
+            </p>
+            {missions.isLoading ? (
+              <div className="mt-4">
+                <LoadingState rows={1} />
               </div>
-              <span
-                className="rounded-lg px-3 py-1 text-xs font-semibold text-primary-foreground"
-                style={{ background: "var(--gradient-hero)" }}
-              >
-                +240 XP
-              </span>
-            </div>
-            <div className="mt-6 flex items-center justify-between">
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1">
-                  Focus
-                </span>
-                <span className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1">
-                  Deep Work
-                </span>
+            ) : missions.isError ? (
+              <div className="mt-4">
+                <ErrorState onRetry={() => missions.refetch()} />
               </div>
-              <button
-                className="rounded-xl px-4 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-neon)] transition hover:brightness-110"
-                style={{ background: "var(--gradient-hero)" }}
-              >
-                Begin Quest →
-              </button>
-            </div>
+            ) : !activeMission ? (
+              <div className="mt-4">
+                <EmptyState
+                  glyph="◆"
+                  title="No active mission"
+                  message="CORE has no mission queued yet. Open the Mission Center to set today's evolution path."
+                  action={
+                    <Link
+                      to="/missions"
+                      className="rounded-xl px-4 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-neon)]"
+                      style={{ background: "var(--gradient-hero)" }}
+                    >
+                      Open Mission Center
+                    </Link>
+                  }
+                />
+              </div>
+            ) : (
+              <>
+                <div className="mt-2 flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-2xl font-semibold">{activeMission.title}</h3>
+                    {activeMission.description && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {activeMission.description}
+                      </p>
+                    )}
+                  </div>
+                  <span
+                    className="rounded-lg px-3 py-1 text-xs font-semibold text-primary-foreground"
+                    style={{ background: "var(--gradient-hero)" }}
+                  >
+                    {activeMission.estimated_minutes} min
+                  </span>
+                </div>
+                <div className="mt-6 flex items-center justify-between">
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1">
+                      {activeMission.mission_type}
+                    </span>
+                    <span className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1">
+                      {activeMission.difficulty}
+                    </span>
+                  </div>
+                  <Link
+                    to="/missions"
+                    className="rounded-xl px-4 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-neon)] transition hover:brightness-110"
+                    style={{ background: "var(--gradient-hero)" }}
+                  >
+                    Begin Quest →
+                  </Link>
+                </div>
+              </>
+            )}
           </GlassCard>
 
           {/* Achievements */}
@@ -255,22 +285,39 @@ function Home() {
             <p className="text-xs uppercase tracking-widest text-muted-foreground">
               Recent Achievements
             </p>
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              {achievements.map((a) => (
-                <div
-                  key={a.label}
-                  className="flex flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-center"
-                >
-                  <span
-                    className="flex h-10 w-10 items-center justify-center rounded-lg text-lg text-primary-foreground"
-                    style={{ background: "var(--gradient-hero)" }}
+            {achievements.isLoading ? (
+              <div className="mt-4">
+                <LoadingState rows={2} />
+              </div>
+            ) : achievements.isError ? (
+              <div className="mt-4">
+                <ErrorState onRetry={() => achievements.refetch()} />
+              </div>
+            ) : (achievements.data?.length ?? 0) === 0 ? (
+              <div className="mt-4">
+                <EmptyState
+                  glyph="✦"
+                  message="No achievements unlocked yet. Your first completed mission will light one up."
+                />
+              </div>
+            ) : (
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                {achievements.data!.slice(0, 4).map((a, i) => (
+                  <div
+                    key={a.id}
+                    className="flex flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-center"
                   >
-                    {a.icon}
-                  </span>
-                  <span className="text-xs text-foreground/80">{a.label}</span>
-                </div>
-              ))}
-            </div>
+                    <span
+                      className="flex h-10 w-10 items-center justify-center rounded-lg text-lg text-primary-foreground"
+                      style={{ background: "var(--gradient-hero)" }}
+                    >
+                      {ACHIEVEMENT_GLYPHS[i % ACHIEVEMENT_GLYPHS.length]}
+                    </span>
+                    <span className="text-xs text-foreground/80">{a.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </GlassCard>
 
           {/* Skills */}
@@ -279,36 +326,63 @@ function Home() {
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 Skill Overview
               </p>
-              <span className="text-xs text-muted-foreground">6 tracked</span>
+              <span className="text-xs text-muted-foreground">
+                {skills.data?.length ?? 0} tracked
+              </span>
             </div>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {mockSkills.map((s, i) => (
-                <motion.div
-                  key={s.name}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
-                  className="rounded-xl border border-white/10 bg-white/5 p-4"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{s.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      Lv {Math.floor(s.value / 10)}
-                    </span>
-                  </div>
-                  <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${s.value}%` }}
-                      transition={{ duration: 1.2, delay: 0.2 + i * 0.05 }}
-                      className="h-full rounded-full"
-                      style={{ background: "var(--gradient-hero)" }}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {skills.isLoading ? (
+              <div className="mt-5">
+                <LoadingState rows={3} />
+              </div>
+            ) : skills.isError ? (
+              <div className="mt-5">
+                <ErrorState onRetry={() => skills.refetch()} />
+              </div>
+            ) : (skills.data?.length ?? 0) === 0 ? (
+              <div className="mt-5">
+                <EmptyState
+                  glyph="❋"
+                  title="Skill graph dormant"
+                  message="Pick the skills you want to grow in setup and CORE will start tracking them here."
+                  action={
+                    <Link
+                      to="/setup"
+                      className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium transition hover:bg-white/10"
+                    >
+                      Configure skills
+                    </Link>
+                  }
+                />
+              </div>
+            ) : (
+              <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {skills.data!.map((s, i) => (
+                  <motion.div
+                    key={s.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                    className="rounded-xl border border-white/10 bg-white/5 p-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{s.name}</span>
+                      <span className="text-xs text-muted-foreground">Lv {s.level}</span>
+                    </div>
+                    <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${s.progress}%` }}
+                        transition={{ duration: 1.2, delay: 0.2 + i * 0.05 }}
+                        className="h-full rounded-full"
+                        style={{ background: "var(--gradient-hero)" }}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </GlassCard>
+
         </div>
       </div>
 
