@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTwinRouteImport } from './routes/_authenticated/twin'
 import { Route as AuthenticatedSystemRouteImport } from './routes/_authenticated/system'
@@ -36,75 +37,79 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedTwinRoute = AuthenticatedTwinRouteImport.update({
-  id: '/_authenticated/twin',
+  id: '/twin',
   path: '/twin',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSystemRoute = AuthenticatedSystemRouteImport.update({
-  id: '/_authenticated/system',
+  id: '/system',
   path: '/system',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSetupRoute = AuthenticatedSetupRouteImport.update({
-  id: '/_authenticated/setup',
+  id: '/setup',
   path: '/setup',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMissionsRoute = AuthenticatedMissionsRouteImport.update({
-  id: '/_authenticated/missions',
+  id: '/missions',
   path: '/missions',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMemoryRoute = AuthenticatedMemoryRouteImport.update({
-  id: '/_authenticated/memory',
+  id: '/memory',
   path: '/memory',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedKnowledgeRoute = AuthenticatedKnowledgeRouteImport.update({
-  id: '/_authenticated/knowledge',
+  id: '/knowledge',
   path: '/knowledge',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
-  id: '/_authenticated/home',
+  id: '/home',
   path: '/home',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedGenomeRoute = AuthenticatedGenomeRouteImport.update({
-  id: '/_authenticated/genome',
+  id: '/genome',
   path: '/genome',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFutureRoute = AuthenticatedFutureRouteImport.update({
-  id: '/_authenticated/future',
+  id: '/future',
   path: '/future',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedEvolutionRoute = AuthenticatedEvolutionRouteImport.update({
-  id: '/_authenticated/evolution',
+  id: '/evolution',
   path: '/evolution',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDevRoute = AuthenticatedDevRouteImport.update({
-  id: '/_authenticated/dev',
+  id: '/dev',
   path: '/dev',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDecisionsRoute = AuthenticatedDecisionsRouteImport.update({
-  id: '/_authenticated/decisions',
+  id: '/decisions',
   path: '/decisions',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCoreRoute = AuthenticatedCoreRouteImport.update({
-  id: '/_authenticated/core',
+  id: '/core',
   path: '/core',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -146,6 +151,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/_authenticated/core': typeof AuthenticatedCoreRoute
@@ -202,6 +208,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/auth'
     | '/onboarding'
     | '/_authenticated/core'
@@ -221,21 +228,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   OnboardingRoute: typeof OnboardingRoute
-  AuthenticatedCoreRoute: typeof AuthenticatedCoreRoute
-  AuthenticatedDecisionsRoute: typeof AuthenticatedDecisionsRoute
-  AuthenticatedDevRoute: typeof AuthenticatedDevRoute
-  AuthenticatedEvolutionRoute: typeof AuthenticatedEvolutionRoute
-  AuthenticatedFutureRoute: typeof AuthenticatedFutureRoute
-  AuthenticatedGenomeRoute: typeof AuthenticatedGenomeRoute
-  AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
-  AuthenticatedKnowledgeRoute: typeof AuthenticatedKnowledgeRoute
-  AuthenticatedMemoryRoute: typeof AuthenticatedMemoryRoute
-  AuthenticatedMissionsRoute: typeof AuthenticatedMissionsRoute
-  AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
-  AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute
-  AuthenticatedTwinRoute: typeof AuthenticatedTwinRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -254,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -266,99 +268,112 @@ declare module '@tanstack/react-router' {
       path: '/twin'
       fullPath: '/twin'
       preLoaderRoute: typeof AuthenticatedTwinRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/system': {
       id: '/_authenticated/system'
       path: '/system'
       fullPath: '/system'
       preLoaderRoute: typeof AuthenticatedSystemRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/setup': {
       id: '/_authenticated/setup'
       path: '/setup'
       fullPath: '/setup'
       preLoaderRoute: typeof AuthenticatedSetupRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/missions': {
       id: '/_authenticated/missions'
       path: '/missions'
       fullPath: '/missions'
       preLoaderRoute: typeof AuthenticatedMissionsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/memory': {
       id: '/_authenticated/memory'
       path: '/memory'
       fullPath: '/memory'
       preLoaderRoute: typeof AuthenticatedMemoryRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/knowledge': {
       id: '/_authenticated/knowledge'
       path: '/knowledge'
       fullPath: '/knowledge'
       preLoaderRoute: typeof AuthenticatedKnowledgeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/genome': {
       id: '/_authenticated/genome'
       path: '/genome'
       fullPath: '/genome'
       preLoaderRoute: typeof AuthenticatedGenomeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/future': {
       id: '/_authenticated/future'
       path: '/future'
       fullPath: '/future'
       preLoaderRoute: typeof AuthenticatedFutureRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/evolution': {
       id: '/_authenticated/evolution'
       path: '/evolution'
       fullPath: '/evolution'
       preLoaderRoute: typeof AuthenticatedEvolutionRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dev': {
       id: '/_authenticated/dev'
       path: '/dev'
       fullPath: '/dev'
       preLoaderRoute: typeof AuthenticatedDevRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/decisions': {
       id: '/_authenticated/decisions'
       path: '/decisions'
       fullPath: '/decisions'
       preLoaderRoute: typeof AuthenticatedDecisionsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/core': {
       id: '/_authenticated/core'
       path: '/core'
       fullPath: '/core'
       preLoaderRoute: typeof AuthenticatedCoreRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
-  OnboardingRoute: OnboardingRoute,
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCoreRoute: typeof AuthenticatedCoreRoute
+  AuthenticatedDecisionsRoute: typeof AuthenticatedDecisionsRoute
+  AuthenticatedDevRoute: typeof AuthenticatedDevRoute
+  AuthenticatedEvolutionRoute: typeof AuthenticatedEvolutionRoute
+  AuthenticatedFutureRoute: typeof AuthenticatedFutureRoute
+  AuthenticatedGenomeRoute: typeof AuthenticatedGenomeRoute
+  AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedKnowledgeRoute: typeof AuthenticatedKnowledgeRoute
+  AuthenticatedMemoryRoute: typeof AuthenticatedMemoryRoute
+  AuthenticatedMissionsRoute: typeof AuthenticatedMissionsRoute
+  AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
+  AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute
+  AuthenticatedTwinRoute: typeof AuthenticatedTwinRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCoreRoute: AuthenticatedCoreRoute,
   AuthenticatedDecisionsRoute: AuthenticatedDecisionsRoute,
   AuthenticatedDevRoute: AuthenticatedDevRoute,
@@ -372,6 +387,16 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedSetupRoute: AuthenticatedSetupRoute,
   AuthenticatedSystemRoute: AuthenticatedSystemRoute,
   AuthenticatedTwinRoute: AuthenticatedTwinRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  OnboardingRoute: OnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
