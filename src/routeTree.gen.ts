@@ -9,92 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TwinRouteImport } from './routes/twin'
-import { Route as SystemRouteImport } from './routes/system'
-import { Route as SetupRouteImport } from './routes/setup'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as MissionsRouteImport } from './routes/missions'
-import { Route as MemoryRouteImport } from './routes/memory'
-import { Route as KnowledgeRouteImport } from './routes/knowledge'
-import { Route as HomeRouteImport } from './routes/home'
-import { Route as GenomeRouteImport } from './routes/genome'
-import { Route as FutureRouteImport } from './routes/future'
-import { Route as EvolutionRouteImport } from './routes/evolution'
-import { Route as DevRouteImport } from './routes/dev'
-import { Route as DecisionsRouteImport } from './routes/decisions'
-import { Route as CoreRouteImport } from './routes/core'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
+import { Route as AuthenticatedTwinRouteImport } from './routes/_authenticated/twin'
+import { Route as AuthenticatedSystemRouteImport } from './routes/_authenticated/system'
+import { Route as AuthenticatedSetupRouteImport } from './routes/_authenticated/setup'
+import { Route as AuthenticatedMissionsRouteImport } from './routes/_authenticated/missions'
+import { Route as AuthenticatedMemoryRouteImport } from './routes/_authenticated/memory'
+import { Route as AuthenticatedKnowledgeRouteImport } from './routes/_authenticated/knowledge'
+import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedGenomeRouteImport } from './routes/_authenticated/genome'
+import { Route as AuthenticatedFutureRouteImport } from './routes/_authenticated/future'
+import { Route as AuthenticatedEvolutionRouteImport } from './routes/_authenticated/evolution'
+import { Route as AuthenticatedDevRouteImport } from './routes/_authenticated/dev'
+import { Route as AuthenticatedDecisionsRouteImport } from './routes/_authenticated/decisions'
+import { Route as AuthenticatedCoreRouteImport } from './routes/_authenticated/core'
 
-const TwinRoute = TwinRouteImport.update({
-  id: '/twin',
-  path: '/twin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SystemRoute = SystemRouteImport.update({
-  id: '/system',
-  path: '/system',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SetupRoute = SetupRouteImport.update({
-  id: '/setup',
-  path: '/setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MissionsRoute = MissionsRouteImport.update({
-  id: '/missions',
-  path: '/missions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemoryRoute = MemoryRouteImport.update({
-  id: '/memory',
-  path: '/memory',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KnowledgeRoute = KnowledgeRouteImport.update({
-  id: '/knowledge',
-  path: '/knowledge',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GenomeRoute = GenomeRouteImport.update({
-  id: '/genome',
-  path: '/genome',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FutureRoute = FutureRouteImport.update({
-  id: '/future',
-  path: '/future',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EvolutionRoute = EvolutionRouteImport.update({
-  id: '/evolution',
-  path: '/evolution',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevRoute = DevRouteImport.update({
-  id: '/dev',
-  path: '/dev',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DecisionsRoute = DecisionsRouteImport.update({
-  id: '/decisions',
-  path: '/decisions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoreRoute = CoreRouteImport.update({
-  id: '/core',
-  path: '/core',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -107,75 +41,133 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthForgotRoute = AuthForgotRouteImport.update({
-  id: '/forgot',
-  path: '/forgot',
-  getParentRoute: () => AuthRoute,
+const AuthenticatedTwinRoute = AuthenticatedTwinRouteImport.update({
+  id: '/_authenticated/twin',
+  path: '/twin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSystemRoute = AuthenticatedSystemRouteImport.update({
+  id: '/_authenticated/system',
+  path: '/system',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSetupRoute = AuthenticatedSetupRouteImport.update({
+  id: '/_authenticated/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMissionsRoute = AuthenticatedMissionsRouteImport.update({
+  id: '/_authenticated/missions',
+  path: '/missions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMemoryRoute = AuthenticatedMemoryRouteImport.update({
+  id: '/_authenticated/memory',
+  path: '/memory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedKnowledgeRoute = AuthenticatedKnowledgeRouteImport.update({
+  id: '/_authenticated/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
+  id: '/_authenticated/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedGenomeRoute = AuthenticatedGenomeRouteImport.update({
+  id: '/_authenticated/genome',
+  path: '/genome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFutureRoute = AuthenticatedFutureRouteImport.update({
+  id: '/_authenticated/future',
+  path: '/future',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedEvolutionRoute = AuthenticatedEvolutionRouteImport.update({
+  id: '/_authenticated/evolution',
+  path: '/evolution',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDevRoute = AuthenticatedDevRouteImport.update({
+  id: '/_authenticated/dev',
+  path: '/dev',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDecisionsRoute = AuthenticatedDecisionsRouteImport.update({
+  id: '/_authenticated/decisions',
+  path: '/decisions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCoreRoute = AuthenticatedCoreRouteImport.update({
+  id: '/_authenticated/core',
+  path: '/core',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/core': typeof CoreRoute
-  '/decisions': typeof DecisionsRoute
-  '/dev': typeof DevRoute
-  '/evolution': typeof EvolutionRoute
-  '/future': typeof FutureRoute
-  '/genome': typeof GenomeRoute
-  '/home': typeof HomeRoute
-  '/knowledge': typeof KnowledgeRoute
-  '/memory': typeof MemoryRoute
-  '/missions': typeof MissionsRoute
+  '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
-  '/setup': typeof SetupRoute
-  '/system': typeof SystemRoute
-  '/twin': typeof TwinRoute
-  '/auth/forgot': typeof AuthForgotRoute
+  '/core': typeof AuthenticatedCoreRoute
+  '/decisions': typeof AuthenticatedDecisionsRoute
+  '/dev': typeof AuthenticatedDevRoute
+  '/evolution': typeof AuthenticatedEvolutionRoute
+  '/future': typeof AuthenticatedFutureRoute
+  '/genome': typeof AuthenticatedGenomeRoute
+  '/home': typeof AuthenticatedHomeRoute
+  '/knowledge': typeof AuthenticatedKnowledgeRoute
+  '/memory': typeof AuthenticatedMemoryRoute
+  '/missions': typeof AuthenticatedMissionsRoute
+  '/setup': typeof AuthenticatedSetupRoute
+  '/system': typeof AuthenticatedSystemRoute
+  '/twin': typeof AuthenticatedTwinRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/core': typeof CoreRoute
-  '/decisions': typeof DecisionsRoute
-  '/dev': typeof DevRoute
-  '/evolution': typeof EvolutionRoute
-  '/future': typeof FutureRoute
-  '/genome': typeof GenomeRoute
-  '/home': typeof HomeRoute
-  '/knowledge': typeof KnowledgeRoute
-  '/memory': typeof MemoryRoute
-  '/missions': typeof MissionsRoute
+  '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
-  '/setup': typeof SetupRoute
-  '/system': typeof SystemRoute
-  '/twin': typeof TwinRoute
-  '/auth/forgot': typeof AuthForgotRoute
+  '/core': typeof AuthenticatedCoreRoute
+  '/decisions': typeof AuthenticatedDecisionsRoute
+  '/dev': typeof AuthenticatedDevRoute
+  '/evolution': typeof AuthenticatedEvolutionRoute
+  '/future': typeof AuthenticatedFutureRoute
+  '/genome': typeof AuthenticatedGenomeRoute
+  '/home': typeof AuthenticatedHomeRoute
+  '/knowledge': typeof AuthenticatedKnowledgeRoute
+  '/memory': typeof AuthenticatedMemoryRoute
+  '/missions': typeof AuthenticatedMissionsRoute
+  '/setup': typeof AuthenticatedSetupRoute
+  '/system': typeof AuthenticatedSystemRoute
+  '/twin': typeof AuthenticatedTwinRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/core': typeof CoreRoute
-  '/decisions': typeof DecisionsRoute
-  '/dev': typeof DevRoute
-  '/evolution': typeof EvolutionRoute
-  '/future': typeof FutureRoute
-  '/genome': typeof GenomeRoute
-  '/home': typeof HomeRoute
-  '/knowledge': typeof KnowledgeRoute
-  '/memory': typeof MemoryRoute
-  '/missions': typeof MissionsRoute
+  '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
-  '/setup': typeof SetupRoute
-  '/system': typeof SystemRoute
-  '/twin': typeof TwinRoute
-  '/auth/forgot': typeof AuthForgotRoute
+  '/_authenticated/core': typeof AuthenticatedCoreRoute
+  '/_authenticated/decisions': typeof AuthenticatedDecisionsRoute
+  '/_authenticated/dev': typeof AuthenticatedDevRoute
+  '/_authenticated/evolution': typeof AuthenticatedEvolutionRoute
+  '/_authenticated/future': typeof AuthenticatedFutureRoute
+  '/_authenticated/genome': typeof AuthenticatedGenomeRoute
+  '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/knowledge': typeof AuthenticatedKnowledgeRoute
+  '/_authenticated/memory': typeof AuthenticatedMemoryRoute
+  '/_authenticated/missions': typeof AuthenticatedMissionsRoute
+  '/_authenticated/setup': typeof AuthenticatedSetupRoute
+  '/_authenticated/system': typeof AuthenticatedSystemRoute
+  '/_authenticated/twin': typeof AuthenticatedTwinRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/onboarding'
     | '/core'
     | '/decisions'
     | '/dev'
@@ -186,15 +178,14 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/memory'
     | '/missions'
-    | '/onboarding'
     | '/setup'
     | '/system'
     | '/twin'
-    | '/auth/forgot'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/onboarding'
     | '/core'
     | '/decisions'
     | '/dev'
@@ -205,149 +196,55 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/memory'
     | '/missions'
-    | '/onboarding'
     | '/setup'
     | '/system'
     | '/twin'
-    | '/auth/forgot'
   id:
     | '__root__'
     | '/'
     | '/auth'
-    | '/core'
-    | '/decisions'
-    | '/dev'
-    | '/evolution'
-    | '/future'
-    | '/genome'
-    | '/home'
-    | '/knowledge'
-    | '/memory'
-    | '/missions'
     | '/onboarding'
-    | '/setup'
-    | '/system'
-    | '/twin'
-    | '/auth/forgot'
+    | '/_authenticated/core'
+    | '/_authenticated/decisions'
+    | '/_authenticated/dev'
+    | '/_authenticated/evolution'
+    | '/_authenticated/future'
+    | '/_authenticated/genome'
+    | '/_authenticated/home'
+    | '/_authenticated/knowledge'
+    | '/_authenticated/memory'
+    | '/_authenticated/missions'
+    | '/_authenticated/setup'
+    | '/_authenticated/system'
+    | '/_authenticated/twin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  CoreRoute: typeof CoreRoute
-  DecisionsRoute: typeof DecisionsRoute
-  DevRoute: typeof DevRoute
-  EvolutionRoute: typeof EvolutionRoute
-  FutureRoute: typeof FutureRoute
-  GenomeRoute: typeof GenomeRoute
-  HomeRoute: typeof HomeRoute
-  KnowledgeRoute: typeof KnowledgeRoute
-  MemoryRoute: typeof MemoryRoute
-  MissionsRoute: typeof MissionsRoute
+  AuthRoute: typeof AuthRoute
   OnboardingRoute: typeof OnboardingRoute
-  SetupRoute: typeof SetupRoute
-  SystemRoute: typeof SystemRoute
-  TwinRoute: typeof TwinRoute
+  AuthenticatedCoreRoute: typeof AuthenticatedCoreRoute
+  AuthenticatedDecisionsRoute: typeof AuthenticatedDecisionsRoute
+  AuthenticatedDevRoute: typeof AuthenticatedDevRoute
+  AuthenticatedEvolutionRoute: typeof AuthenticatedEvolutionRoute
+  AuthenticatedFutureRoute: typeof AuthenticatedFutureRoute
+  AuthenticatedGenomeRoute: typeof AuthenticatedGenomeRoute
+  AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedKnowledgeRoute: typeof AuthenticatedKnowledgeRoute
+  AuthenticatedMemoryRoute: typeof AuthenticatedMemoryRoute
+  AuthenticatedMissionsRoute: typeof AuthenticatedMissionsRoute
+  AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
+  AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute
+  AuthenticatedTwinRoute: typeof AuthenticatedTwinRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/twin': {
-      id: '/twin'
-      path: '/twin'
-      fullPath: '/twin'
-      preLoaderRoute: typeof TwinRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/system': {
-      id: '/system'
-      path: '/system'
-      fullPath: '/system'
-      preLoaderRoute: typeof SystemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/setup': {
-      id: '/setup'
-      path: '/setup'
-      fullPath: '/setup'
-      preLoaderRoute: typeof SetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/missions': {
-      id: '/missions'
-      path: '/missions'
-      fullPath: '/missions'
-      preLoaderRoute: typeof MissionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/memory': {
-      id: '/memory'
-      path: '/memory'
-      fullPath: '/memory'
-      preLoaderRoute: typeof MemoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/knowledge': {
-      id: '/knowledge'
-      path: '/knowledge'
-      fullPath: '/knowledge'
-      preLoaderRoute: typeof KnowledgeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/genome': {
-      id: '/genome'
-      path: '/genome'
-      fullPath: '/genome'
-      preLoaderRoute: typeof GenomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/future': {
-      id: '/future'
-      path: '/future'
-      fullPath: '/future'
-      preLoaderRoute: typeof FutureRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/evolution': {
-      id: '/evolution'
-      path: '/evolution'
-      fullPath: '/evolution'
-      preLoaderRoute: typeof EvolutionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev': {
-      id: '/dev'
-      path: '/dev'
-      fullPath: '/dev'
-      preLoaderRoute: typeof DevRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/decisions': {
-      id: '/decisions'
-      path: '/decisions'
-      fullPath: '/decisions'
-      preLoaderRoute: typeof DecisionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/core': {
-      id: '/core'
-      path: '/core'
-      fullPath: '/core'
-      preLoaderRoute: typeof CoreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -364,54 +261,118 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/forgot': {
-      id: '/auth/forgot'
-      path: '/forgot'
-      fullPath: '/auth/forgot'
-      preLoaderRoute: typeof AuthForgotRouteImport
-      parentRoute: typeof AuthRoute
+    '/_authenticated/twin': {
+      id: '/_authenticated/twin'
+      path: '/twin'
+      fullPath: '/twin'
+      preLoaderRoute: typeof AuthenticatedTwinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/system': {
+      id: '/_authenticated/system'
+      path: '/system'
+      fullPath: '/system'
+      preLoaderRoute: typeof AuthenticatedSystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/setup': {
+      id: '/_authenticated/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof AuthenticatedSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/missions': {
+      id: '/_authenticated/missions'
+      path: '/missions'
+      fullPath: '/missions'
+      preLoaderRoute: typeof AuthenticatedMissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/memory': {
+      id: '/_authenticated/memory'
+      path: '/memory'
+      fullPath: '/memory'
+      preLoaderRoute: typeof AuthenticatedMemoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/knowledge': {
+      id: '/_authenticated/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AuthenticatedKnowledgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/home': {
+      id: '/_authenticated/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedHomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/genome': {
+      id: '/_authenticated/genome'
+      path: '/genome'
+      fullPath: '/genome'
+      preLoaderRoute: typeof AuthenticatedGenomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/future': {
+      id: '/_authenticated/future'
+      path: '/future'
+      fullPath: '/future'
+      preLoaderRoute: typeof AuthenticatedFutureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/evolution': {
+      id: '/_authenticated/evolution'
+      path: '/evolution'
+      fullPath: '/evolution'
+      preLoaderRoute: typeof AuthenticatedEvolutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dev': {
+      id: '/_authenticated/dev'
+      path: '/dev'
+      fullPath: '/dev'
+      preLoaderRoute: typeof AuthenticatedDevRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/decisions': {
+      id: '/_authenticated/decisions'
+      path: '/decisions'
+      fullPath: '/decisions'
+      preLoaderRoute: typeof AuthenticatedDecisionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/core': {
+      id: '/_authenticated/core'
+      path: '/core'
+      fullPath: '/core'
+      preLoaderRoute: typeof AuthenticatedCoreRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AuthRouteChildren {
-  AuthForgotRoute: typeof AuthForgotRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthForgotRoute: AuthForgotRoute,
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
-  CoreRoute: CoreRoute,
-  DecisionsRoute: DecisionsRoute,
-  DevRoute: DevRoute,
-  EvolutionRoute: EvolutionRoute,
-  FutureRoute: FutureRoute,
-  GenomeRoute: GenomeRoute,
-  HomeRoute: HomeRoute,
-  KnowledgeRoute: KnowledgeRoute,
-  MemoryRoute: MemoryRoute,
-  MissionsRoute: MissionsRoute,
+  AuthRoute: AuthRoute,
   OnboardingRoute: OnboardingRoute,
-  SetupRoute: SetupRoute,
-  SystemRoute: SystemRoute,
-  TwinRoute: TwinRoute,
+  AuthenticatedCoreRoute: AuthenticatedCoreRoute,
+  AuthenticatedDecisionsRoute: AuthenticatedDecisionsRoute,
+  AuthenticatedDevRoute: AuthenticatedDevRoute,
+  AuthenticatedEvolutionRoute: AuthenticatedEvolutionRoute,
+  AuthenticatedFutureRoute: AuthenticatedFutureRoute,
+  AuthenticatedGenomeRoute: AuthenticatedGenomeRoute,
+  AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedKnowledgeRoute: AuthenticatedKnowledgeRoute,
+  AuthenticatedMemoryRoute: AuthenticatedMemoryRoute,
+  AuthenticatedMissionsRoute: AuthenticatedMissionsRoute,
+  AuthenticatedSetupRoute: AuthenticatedSetupRoute,
+  AuthenticatedSystemRoute: AuthenticatedSystemRoute,
+  AuthenticatedTwinRoute: AuthenticatedTwinRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
