@@ -25,7 +25,7 @@ import {
   statuses,
 } from "@/lib/system-mock";
 
-export const Route = createFileRoute("/system")({
+export const Route = createFileRoute("/_authenticated/system")({
   head: () => ({
     meta: [
       { title: "System — LifeOS" },

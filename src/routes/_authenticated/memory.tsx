@@ -20,7 +20,7 @@ import {
   pinnedMemories,
 } from "@/lib/memory-mock";
 
-export const Route = createFileRoute("/memory")({
+export const Route = createFileRoute("/_authenticated/memory")({
   head: () => ({
     meta: [
       { title: "CORE Memory — Long-Term Intelligence" },

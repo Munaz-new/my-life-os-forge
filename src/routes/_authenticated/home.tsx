@@ -6,7 +6,7 @@ import { XPBar } from "@/components/lifeos/XPBar";
 import { LogoMark } from "@/components/lifeos/LogoMark";
 import { useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/home")({
+export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
     meta: [
       { title: "Dashboard — LifeOS" },

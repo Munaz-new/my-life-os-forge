@@ -13,7 +13,7 @@ import { QuestionCard } from "@/components/lifeos/decisions/QuestionCard";
 import { decisionGoal, options } from "@/lib/decisions-mock";
 import { eventBus, useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/decisions")({
+export const Route = createFileRoute("/_authenticated/decisions")({
   head: () => ({
     meta: [
       { title: "Decision Engine — Understand Why CORE Recommends This" },

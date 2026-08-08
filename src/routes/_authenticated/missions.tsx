@@ -15,7 +15,7 @@ import { ReflectionCard } from "@/components/lifeos/missions/ReflectionCard";
 import { categories } from "@/lib/missions-mock";
 import { useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/missions")({
+export const Route = createFileRoute("/_authenticated/missions")({
   head: () => ({
     meta: [
       { title: "Mission Center — LifeOS" },

@@ -6,7 +6,7 @@ import { NeonButton } from "@/components/lifeos/NeonButton";
 import { SelectableChip } from "@/components/lifeos/SelectableChip";
 import { LogoMark } from "@/components/lifeos/LogoMark";
 
-export const Route = createFileRoute("/setup")({
+export const Route = createFileRoute("/_authenticated/setup")({
   head: () => ({
     meta: [
       { title: "Configure Your Life System — LifeOS" },

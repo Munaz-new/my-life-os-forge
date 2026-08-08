@@ -16,7 +16,7 @@ import { decisions, projections } from "@/lib/evolution-mock";
 import { useEffect } from "react";
 import { growthEngine, useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/evolution")({
+export const Route = createFileRoute("/_authenticated/evolution")({
   head: () => ({
     meta: [
       { title: "Evolution Review — How Today Changed You" },

@@ -22,7 +22,7 @@ import {
 
 const DEV_KEY = "evolve.devMode";
 
-export const Route = createFileRoute("/dev")({
+export const Route = createFileRoute("/_authenticated/dev")({
   head: () => ({
     meta: [
       { title: "CORE Developer Preview — EVOLVE" },

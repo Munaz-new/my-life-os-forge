@@ -28,7 +28,7 @@ import {
 } from "@/lib/future-mock";
 import { eventBus, useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/future")({
+export const Route = createFileRoute("/_authenticated/future")({
   head: () => ({
     meta: [
       { title: "Future Simulator — Explore the Future You're Creating" },

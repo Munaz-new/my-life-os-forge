@@ -19,7 +19,7 @@ import {
 } from "@/lib/knowledge-mock";
 import { eventBus, useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/knowledge")({
+export const Route = createFileRoute("/_authenticated/knowledge")({
   head: () => ({
     meta: [
       { title: "Knowledge Graph — How CORE Understands You" },
