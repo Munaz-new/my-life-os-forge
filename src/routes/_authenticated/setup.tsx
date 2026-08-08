@@ -5,8 +5,10 @@ import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
 import { NeonButton } from "@/components/lifeos/NeonButton";
 import { SelectableChip } from "@/components/lifeos/SelectableChip";
 import { LogoMark } from "@/components/lifeos/LogoMark";
+import { useQueryClient } from "@tanstack/react-query";
+import { completeSetup } from "@/lib/data/setup.functions";
 
-export const Route = createFileRoute("/setup")({
+export const Route = createFileRoute("/_authenticated/setup")({
   head: () => ({
     meta: [
       { title: "Configure Your Life System — LifeOS" },
@@ -25,10 +27,18 @@ const skills = [
   "Leadership", "Discipline", "Money", "Languages",
 ];
 const hours = ["30 minutes", "1 hour", "2 hours", "3+ hours"];
+const hourMinutes: Record<string, number> = {
+  "30 minutes": 30,
+  "1 hour": 60,
+  "2 hours": 120,
+  "3+ hours": 180,
+};
 
 function Setup() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [goal, setGoal] = useState<string>("");
   const [customGoal, setCustomGoal] = useState<string>("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
@@ -37,11 +47,29 @@ function Setup() {
   const totalSteps = 4;
 
   useEffect(() => {
-    if (step === 3) {
-      const t = setTimeout(() => navigate({ to: "/home" }), 2600);
-      return () => clearTimeout(t);
-    }
-  }, [step, navigate]);
+    if (step !== 3) return;
+    let cancelled = false;
+    const run = async () => {
+      try {
+        await completeSetup({
+          data: {
+            goal: customGoal.trim() || goal,
+            skills: selectedSkills,
+            dailyMinutes: hourMinutes[time] ?? 60,
+          },
+        });
+        queryClient.invalidateQueries();
+      } catch {
+        if (!cancelled) setSaveError("CORE could not save your calibration. You can adjust it later.");
+      }
+      if (!cancelled) setTimeout(() => navigate({ to: "/home" }), 1400);
+    };
+    void run();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   const canNext =
     (step === 0 && (goal || customGoal.trim())) ||
@@ -167,7 +195,7 @@ function Setup() {
               </div>
             )}
 
-            {step === 3 && <Generating />}
+            {step === 3 && <Generating error={saveError} />}
           </motion.div>
         </AnimatePresence>
       </section>
@@ -195,7 +223,7 @@ function Setup() {
   );
 }
 
-function Generating() {
+function Generating({ error }: { error?: string | null }) {
   return (
     <div className="flex flex-col items-center text-center">
       <LogoMark size={112} />
@@ -205,6 +233,7 @@ function Generating() {
       <p className="mt-3 max-w-md text-sm text-muted-foreground">
         Calibrating your neural profile, quest engine, and skill graph.
       </p>
+      {error && <p className="mt-4 text-xs text-destructive">{error}</p>}
       <div className="mt-10 w-full max-w-xs">
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
           <motion.div

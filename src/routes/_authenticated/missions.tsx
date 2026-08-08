@@ -12,10 +12,11 @@ import { MissionTimeline } from "@/components/lifeos/missions/MissionTimeline";
 import { MissionReason } from "@/components/lifeos/missions/MissionReason";
 import { MissionControls } from "@/components/lifeos/missions/MissionControls";
 import { ReflectionCard } from "@/components/lifeos/missions/ReflectionCard";
+import { MissionLedger } from "@/components/lifeos/missions/MissionLedger";
 import { categories } from "@/lib/missions-mock";
 import { useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/missions")({
+export const Route = createFileRoute("/_authenticated/missions")({
   head: () => ({
     meta: [
       { title: "Mission Center — LifeOS" },
@@ -166,6 +167,10 @@ function MissionsPage() {
             <MissionHeroCard />
           </motion.div>
         </div>
+
+        <Section title="Your Missions" eyebrow="Live Directives" delay={0.12}>
+          <MissionLedger />
+        </Section>
 
         <Section title="CORE Reasoning" eyebrow="Why this mission" delay={0.15}>
           <MissionReason />

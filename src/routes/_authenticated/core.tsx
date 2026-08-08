@@ -22,7 +22,7 @@ import {
   weeklyIntelligence,
 } from "@/lib/core-mock";
 
-export const Route = createFileRoute("/core")({
+export const Route = createFileRoute("/_authenticated/core")({
   head: () => ({
     meta: [
       { title: "CORE — LifeOS" },

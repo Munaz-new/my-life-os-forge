@@ -11,7 +11,7 @@ import { Heatmap } from "@/components/lifeos/genome/Heatmap";
 import { EvolutionTimeline } from "@/components/lifeos/genome/EvolutionTimeline";
 import { growthEngine, useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/genome")({
+export const Route = createFileRoute("/_authenticated/genome")({
   head: () => ({
     meta: [
       { title: "Evolution Genome — LifeOS" },

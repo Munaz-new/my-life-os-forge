@@ -25,7 +25,7 @@ import {
 } from "@/lib/twin-mock";
 import { eventBus, useCoreModule } from "@/lib/core-engine";
 
-export const Route = createFileRoute("/twin")({
+export const Route = createFileRoute("/_authenticated/twin")({
   head: () => ({
     meta: [
       { title: "Digital Twin — Your Living Evolution Model" },
