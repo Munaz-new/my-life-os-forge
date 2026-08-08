@@ -1,9 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
 import { GlassCard } from "@/components/lifeos/GlassCard";
 import { XPBar } from "@/components/lifeos/XPBar";
 import { LogoMark } from "@/components/lifeos/LogoMark";
+import { SignOutButton } from "@/components/lifeos/SignOutButton";
+import { EmptyState, ErrorState, LoadingState } from "@/components/lifeos/DataStates";
+import {
+  achievementsQuery,
+  missionsQuery,
+  profileQuery,
+  skillsQuery,
+} from "@/lib/data/queries";
 import { useCoreModule } from "@/lib/core-engine";
 
 export const Route = createFileRoute("/_authenticated/home")({
@@ -16,24 +25,19 @@ export const Route = createFileRoute("/_authenticated/home")({
   component: Home,
 });
 
-const mockSkills = [
-  { name: "Programming", value: 72, tone: "primary" },
-  { name: "Discipline", value: 58, tone: "cyan" },
-  { name: "Fitness", value: 41, tone: "violet" },
-  { name: "Communication", value: 63, tone: "primary" },
-  { name: "Reading", value: 36, tone: "cyan" },
-  { name: "Leadership", value: 49, tone: "violet" },
-];
-
-const achievements = [
-  { icon: "◆", label: "7-Day Streak" },
-  { icon: "✦", label: "First Quest" },
-  { icon: "◈", label: "Skill Awakened" },
-  { icon: "❋", label: "Focus Master" },
-];
+const ACHIEVEMENT_GLYPHS = ["◆", "✦", "◈", "❋"];
 
 function Home() {
   useCoreModule("dashboard");
+  const profile = useQuery(profileQuery);
+  const skills = useQuery(skillsQuery);
+  const achievements = useQuery(achievementsQuery);
+  const missions = useQuery(missionsQuery);
+
+  const displayName = profile.data?.display_name?.trim() || "Operator";
+  const avatarUrl = profile.data?.avatar_url ?? null;
+  const activeMission =
+    missions.data?.find((m) => m.status !== "completed") ?? null;
   return (
     <main className="relative min-h-screen overflow-hidden pb-24">
       <AmbientBackground />
@@ -54,6 +58,7 @@ function Home() {
             Online
           </span>
           <span>v1.0</span>
+          <SignOutButton />
         </div>
       </header>
 
@@ -65,8 +70,16 @@ function Home() {
           className="mb-8"
         >
           <p className="text-sm text-muted-foreground">Welcome back,</p>
-          <h1 className="mt-1 text-3xl font-semibold sm:text-4xl">
-            <span className="text-gradient">Operator</span>
+          <h1 className="mt-1 flex items-center gap-3 text-3xl font-semibold sm:text-4xl">
+            {avatarUrl && (
+              <img
+                src={avatarUrl}
+                alt={`${displayName} avatar`}
+                className="h-11 w-11 rounded-full border border-white/10 object-cover"
+                loading="lazy"
+              />
+            )}
+            <span className="text-gradient">{displayName}</span>
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Your system is calibrated. Today's window of growth is open.
