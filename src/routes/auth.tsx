@@ -1,16 +1,20 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { AmbientBackground } from "@/components/lifeos/AmbientBackground";
-import { NeonButton } from "@/components/lifeos/NeonButton";
 import { LogoMark } from "@/components/lifeos/LogoMark";
-import { cn } from "@/lib/utils";
+import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign In — LifeOS" },
       { name: "description", content: "Access your Life System." },
+      { property: "og:title", content: "Sign In — LifeOS" },
+      { property: "og:description", content: "Access your Life System." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Auth,
@@ -18,11 +22,41 @@ export const Route = createFileRoute("/auth")({
 
 function Auth() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handle = (e: FormEvent) => {
-    e.preventDefault();
-    navigate({ to: "/setup" });
+  useEffect(() => {
+    let active = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (active && data.session) navigate({ to: "/home", replace: true });
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) navigate({ to: "/home", replace: true });
+    });
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
+  const signIn = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        setError("Sign-in could not be completed. Try again.");
+        setBusy(false);
+        return;
+      }
+      if (result.redirected) return;
+      navigate({ to: "/home", replace: true });
+    } catch {
+      setError("Sign-in could not be completed. Try again.");
+      setBusy(false);
+    }
   };
 
   return (
@@ -36,89 +70,28 @@ function Auth() {
       >
         <div className="flex flex-col items-center text-center">
           <LogoMark size={64} />
-          <h1 className="mt-6 text-2xl font-semibold">
-            {mode === "signin" ? "Welcome back" : "Create your account"}
-          </h1>
+          <h1 className="mt-6 text-2xl font-semibold">Enter your Life System</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {mode === "signin"
-              ? "Continue your journey."
-              : "Begin building your Life System."}
+            One identity. Your entire evolution, remembered.
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-1 rounded-xl bg-white/5 p-1 ring-1 ring-white/10">
-          {(["signin", "signup"] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={cn(
-                "rounded-lg py-2 text-sm font-medium transition",
-                mode === m
-                  ? "text-primary-foreground shadow-[var(--shadow-neon)] [background:var(--gradient-hero)]"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {m === "signin" ? "Sign In" : "Create Account"}
-            </button>
-          ))}
-        </div>
-
-        <form onSubmit={handle} className="mt-6 space-y-4">
-          {mode === "signup" && (
-            <Field label="Name" type="text" placeholder="Your name" />
-          )}
-          <Field label="Email" type="email" placeholder="you@lifeos.app" />
-          <Field label="Password" type="password" placeholder="••••••••" />
-
-          {mode === "signin" && (
-            <div className="flex justify-end">
-              <Link
-                to="/auth/forgot"
-                className="text-xs text-muted-foreground transition hover:text-foreground"
-              >
-                Forgot password?
-              </Link>
-            </div>
-          )}
-
-          <NeonButton type="submit" size="lg" className="w-full">
-            {mode === "signin" ? "Sign In" : "Create Account"}
-          </NeonButton>
-        </form>
-
-        <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="h-px flex-1 bg-white/10" />
-          or continue with
-          <span className="h-px flex-1 bg-white/10" />
-        </div>
-
         <button
-          onClick={() => navigate({ to: "/setup" })}
-          className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 py-3 text-sm font-medium transition hover:bg-white/10"
+          onClick={signIn}
+          disabled={busy}
+          className="mt-8 flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 py-3 text-sm font-medium transition hover:bg-white/10 disabled:opacity-60"
         >
           <GoogleIcon />
-          Continue with Google
+          {busy ? "Connecting…" : "Continue with Google"}
         </button>
+
+        {error && <p className="mt-4 text-center text-xs text-destructive">{error}</p>}
+
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          CORE stores your profile, goals and progress securely — visible only to you.
+        </p>
       </motion.div>
     </main>
-  );
-}
-
-function Field({
-  label,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        {label}
-      </span>
-      <input
-        required
-        {...props}
-        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary/60 focus:bg-white/10 focus:ring-2 focus:ring-primary/30"
-      />
-    </label>
   );
 }
 
