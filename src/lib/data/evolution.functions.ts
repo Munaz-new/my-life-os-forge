@@ -51,7 +51,7 @@ export const recordEvolutionEvent = createServerFn({ method: "POST" })
       title: data.title,
       description: data.description ?? null,
       impact: data.impact ?? 0,
-      metadata: data.metadata ?? {},
+      metadata: (data.metadata ?? {}) as never,
     });
     if (error) throw new Error("Could not record evolution event");
     return { ok: true as const };
