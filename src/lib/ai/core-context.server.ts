@@ -60,7 +60,7 @@ export async function buildCoreContext(
   ]);
 
   const goals = goalsRes.data ?? [];
-  const skills = (skillsRes.data ?? []) as Array<{
+  const skills = (skillsRes.data ?? []) as unknown as Array<{
     level: number;
     progress: number;
     trend: string;
