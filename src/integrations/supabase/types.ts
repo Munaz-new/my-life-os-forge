@@ -110,8 +110,10 @@ export type Database = {
       mission_results: {
         Row: {
           completed: boolean
+          completion_status: string
           completion_time: number | null
           created_at: string
+          difficulty_feedback: string | null
           id: string
           mission_id: string
           reflection: string | null
@@ -119,8 +121,10 @@ export type Database = {
         }
         Insert: {
           completed?: boolean
+          completion_status?: string
           completion_time?: number | null
           created_at?: string
+          difficulty_feedback?: string | null
           id?: string
           mission_id: string
           reflection?: string | null
@@ -128,8 +132,10 @@ export type Database = {
         }
         Update: {
           completed?: boolean
+          completion_status?: string
           completion_time?: number | null
           created_at?: string
+          difficulty_feedback?: string | null
           id?: string
           mission_id?: string
           reflection?: string | null
@@ -147,42 +153,89 @@ export type Database = {
       }
       missions: {
         Row: {
+          abandoned_at: string | null
+          accepted_at: string | null
           completed_at: string | null
+          confidence: number
           created_at: string
           description: string | null
           difficulty: string
           estimated_minutes: number
+          expected_impact: string | null
           id: string
           mission_type: string
+          objective: string | null
+          preparation: string | null
+          priority: number
+          reason: string | null
+          related_goal: string | null
+          related_goal_id: string | null
+          related_skills: string[]
+          source: string
           status: string
+          success_criteria: string[]
           title: string
           user_id: string
         }
         Insert: {
+          abandoned_at?: string | null
+          accepted_at?: string | null
           completed_at?: string | null
+          confidence?: number
           created_at?: string
           description?: string | null
           difficulty?: string
           estimated_minutes?: number
+          expected_impact?: string | null
           id?: string
           mission_type?: string
+          objective?: string | null
+          preparation?: string | null
+          priority?: number
+          reason?: string | null
+          related_goal?: string | null
+          related_goal_id?: string | null
+          related_skills?: string[]
+          source?: string
           status?: string
+          success_criteria?: string[]
           title: string
           user_id: string
         }
         Update: {
+          abandoned_at?: string | null
+          accepted_at?: string | null
           completed_at?: string | null
+          confidence?: number
           created_at?: string
           description?: string | null
           difficulty?: string
           estimated_minutes?: number
+          expected_impact?: string | null
           id?: string
           mission_type?: string
+          objective?: string | null
+          preparation?: string | null
+          priority?: number
+          reason?: string | null
+          related_goal?: string | null
+          related_goal_id?: string | null
+          related_skills?: string[]
+          source?: string
           status?: string
+          success_criteria?: string[]
           title?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "missions_related_goal_id_fkey"
+            columns: ["related_goal_id"]
+            isOneToOne: false
+            referencedRelation: "user_goals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
