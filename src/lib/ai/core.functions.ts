@@ -52,12 +52,12 @@ export const runCoreReasoning = createServerFn({ method: "POST" })
       };
     }
 
-    const apiKey = process.env["LOVABLE_API_KEY"];
-    if (!apiKey) {
+    const apiKey = process.env["AI_API_KEY"];
+    if (!apiKey || !process.env.AI_BASE_URL || !process.env.AI_MODEL) {
       return { status: "unavailable", mode, message: CORE_UNAVAILABLE_MESSAGE };
     }
 
-    const { createLovableAiGatewayProvider, CORE_MODEL } = await import("@/lib/ai-gateway.server");
+    const { createAiProvider, CORE_MODEL } = await import("@/lib/ai-gateway.server");
     const { streamText } = await import("ai");
 
     const instruction =
@@ -72,7 +72,7 @@ Return only the JSON object.`;
 
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
-        const gateway = createLovableAiGatewayProvider(apiKey);
+        const gateway = createAiProvider(apiKey);
         const result = streamText({
           model: gateway(CORE_MODEL),
           system: CORE_SYSTEM_IDENTITY,

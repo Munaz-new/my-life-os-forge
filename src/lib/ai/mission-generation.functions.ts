@@ -82,8 +82,8 @@ export const generateMission = createServerFn({ method: "POST" })
       };
     }
 
-    const apiKey = process.env["LOVABLE_API_KEY"];
-    if (!apiKey) return { status: "unavailable", message: CORE_UNAVAILABLE_MESSAGE };
+    const apiKey = process.env["AI_API_KEY"];
+    if (!apiKey || !process.env.AI_BASE_URL || !process.env.AI_MODEL) return { status: "unavailable", message: CORE_UNAVAILABLE_MESSAGE };
 
     const adaptation = computeAdaptation({
       results: bundle.results,
@@ -100,14 +100,14 @@ export const generateMission = createServerFn({ method: "POST" })
       ...(data.rejectionReason ? { rejectionReason: data.rejectionReason } : {}),
     });
 
-    const { createLovableAiGatewayProvider, CORE_MODEL } = await import("@/lib/ai-gateway.server");
+    const { createAiProvider, CORE_MODEL } = await import("@/lib/ai-gateway.server");
     const { streamText } = await import("ai");
 
     let mission: NormalizedMission | null = null;
 
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
-        const gateway = createLovableAiGatewayProvider(apiKey);
+        const gateway = createAiProvider(apiKey);
         const result = streamText({
           model: gateway(CORE_MODEL),
           system: CORE_SYSTEM_IDENTITY,

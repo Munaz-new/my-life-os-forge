@@ -30,9 +30,7 @@ export const Route = createFileRoute("/_authenticated/decisions")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:url", content: "https://my-life-os-forge.lovable.app/decisions" },
     ],
-    links: [{ rel: "canonical", href: "https://my-life-os-forge.lovable.app/decisions" }],
   }),
   component: DecisionsPage,
 });

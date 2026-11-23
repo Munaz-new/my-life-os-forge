@@ -36,9 +36,7 @@ export const Route = createFileRoute("/_authenticated/knowledge")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:url", content: "https://my-life-os-forge.lovable.app/knowledge" },
     ],
-    links: [{ rel: "canonical", href: "https://my-life-os-forge.lovable.app/knowledge" }],
   }),
   component: KnowledgePage,
 });

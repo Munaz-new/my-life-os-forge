@@ -207,16 +207,6 @@ Only create the UI and navigation flow for these screens using reusable componen
 
 The goal of Phase 1 is to establish the visual identity and user experience of the application.
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c904c38d-da3a-4e81-99bc-ad6a8483f878).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
@@ -227,3 +217,13 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Service configuration
+
+Copy `.env.example` to `.env` and fill in your own service settings. The app uses Supabase directly for authentication and data. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` for the browser build, and `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` on the server. Use a Supabase project you control and apply the SQL migrations in `supabase/migrations` when provisioning a new database. Existing data must be migrated separately.
+
+Enable the Google provider in Supabase with your Google OAuth credentials. Register Supabase's callback URL with Google and allow your site's `/auth` URL in Supabase's redirect settings.
+
+For AI, set server-only `AI_API_KEY`, `AI_BASE_URL` (an OpenAI-compatible API endpoint), and `AI_MODEL`. Without these settings, AI features return an unavailable status. Never prefix the API key with `VITE_`.
+
+Run `npm run build` to produce the Nitro server output. Deploy it to your own hosting environment and configure the variables there. External editor synchronization and GitHub App access must be disconnected in the account settings separately; removing repository code does not revoke installed applications.

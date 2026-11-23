@@ -6,7 +6,6 @@ import { LogoMark } from "@/components/lifeos/LogoMark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
@@ -51,16 +50,16 @@ function Auth() {
     setError(null);
     setNotice(null);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+      const result = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/auth` },
       });
       if (result.error) {
         setError("Sign-in could not be completed. Try again.");
         setBusy(null);
         return;
       }
-      if (result.redirected) return;
-      navigate({ to: "/home", replace: true });
+      // Supabase redirects the browser to the provider on success.
     } catch {
       setError("Sign-in could not be completed. Try again.");
       setBusy(null);
